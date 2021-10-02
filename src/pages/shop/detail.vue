@@ -90,7 +90,7 @@
             <div class="review" v-show="showReview">
                 <div
                     class="fb-comments"
-                    :data-href="link"
+                    data-href="https://flatsome-shop.netlify.app/"
                     data-width=""
                     data-numposts="8"
                 ></div>
