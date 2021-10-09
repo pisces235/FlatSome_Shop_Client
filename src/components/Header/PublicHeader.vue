@@ -390,6 +390,7 @@ header {
                         box-shadow: 2px 2px 2px 2px #888888;
                         padding: 20px;
                         overflow-y: auto;
+                        z-index: 5;
                         .contain-input {
                             margin-bottom: 15px;
                             #search-input {
