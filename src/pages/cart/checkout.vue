@@ -197,7 +197,7 @@
 
             <div class="contain-btn">
                 <button class="checkout-btn" @click="addNewOrder()">
-                    PLACCE ORDER
+                    PLACE ORDER
                 </button>
             </div>
             <div class="our-note">
