@@ -3,7 +3,9 @@
         <div v-if="user.orders.length > 0">
             <table v-for="(o, i) in user.orders" :key="i">
                 <tr>
-                    <th colspan="4" class="text-center">Order #{{ i + 1 }}</th>
+                    <th colspan="4" class="text-center border-0">
+                        <h3>Order #{{ i + 1 }}</h3>
+                    </th>
                 </tr>
                 <tr>
                     <th>PRODUCT</th>
@@ -48,7 +50,7 @@
                         </a>
                     </td>
                     <td class="price">
-                        <p class="price-box">
+                        <p class="price-box text-center d-block w-100">
                             ${{
                                 item.product.price
                                     .toFixed(2)
@@ -58,7 +60,9 @@
                         </p>
                     </td>
                     <td class="contain_qty">
-                        <p class="text-center">{{ item.quantity }}</p>
+                        <p class="text-center d-block w-100">
+                            {{ item.quantity }}
+                        </p>
                     </td>
                     <td class="subToTal text-center">
                         ${{ item.product.price * item.quantity }}
@@ -90,10 +94,12 @@
                     </td>
                     <td class="text-center subToTal">PAID</td>
                     <td class="text-center">
-                        <p v-if="o.confirm == true" class="green">
+                        <p v-if="o.payment == true" class="green text-center">
                             You was paid this order!
                         </p>
-                        <p v-else class="red">You have not pay yet!</p>
+                        <p v-else class="red text-center">
+                            You have not pay yet!
+                        </p>
                     </td>
                 </tr>
             </table>

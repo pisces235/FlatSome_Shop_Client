@@ -15,8 +15,12 @@
             <a class="" href="/my-account/edit-address/billing" v-else>Edit</a>
             <div class="contain-address" v-if="user.address.length > 0">
                 <p>{{ user.name }}</p>
-                <p>
+                <p v-if="user.address[0].left_address != ''">
                     {{ user.address[0].left_address }},
+                    {{ user.address[0].ward }} , {{ user.address[0].district }},
+                    {{ user.address[0].province }}
+                </p>
+                <p v-else>
                     {{ user.address[0].ward }} , {{ user.address[0].district }},
                     {{ user.address[0].province }}
                 </p>
