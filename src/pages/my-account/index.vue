@@ -17,19 +17,31 @@
                         <li><a href="/my-account">DASHBOARD</a></li>
                         <li><a href="/my-account/orders">ORDERS</a></li>
                         <li><a href="/my-account/addresses">ADDRESSES</a></li>
-                        <li><a href="/my-account/account-details">ACCOUNT DETAILS</a></li>
+                        <li>
+                            <a href="/my-account/account-details"
+                                >ACCOUNT DETAILS</a
+                            >
+                        </li>
                         <li><div @click.prevent="logoutUser">LOGOUT</div></li>
                     </ul>
                 </nav>
             </div>
             <div class="contain-right">
                 <div v-if="link == '/my-account'">
-                    <p>Hello <b>{{user.name}}</b></p>
-                    <p>From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.</p>
+                    <p>
+                        Hello <b>{{ user.name }}</b>
+                    </p>
+                    <p>
+                        From your account dashboard you can view your recent
+                        orders, manage your shipping and billing addresses, and
+                        edit your password and account details.
+                    </p>
                     <div class="contain-btn">
                         <a href="/my-account/orders">Orders</a>
                         <a href="/my-account/addresses">Addresses</a>
-                        <a href="/my-account/account-details">Account Details</a>
+                        <a href="/my-account/account-details"
+                            >Account Details</a
+                        >
                     </div>
                 </div>
                 <div v-else>
@@ -73,7 +85,7 @@ export default {
         logoutUser() {
             this.$store.dispatch("logoutUser");
             this.isLoggedIn = false;
-            window.localStorage.isLoggedIn = JSON.stringify(false)
+            window.localStorage.isLoggedIn = JSON.stringify(false);
             this.$router.push("/");
         },
     },
@@ -127,7 +139,8 @@ export default {
                     padding: 0 0 20px 0;
                     li {
                         border-bottom: 1px solid #ccc;
-                        a, div {
+                        a,
+                        div {
                             font-size: 13px;
                             font-weight: 600;
                             color: #ccc;
@@ -135,7 +148,8 @@ export default {
                             display: block;
                             cursor: pointer;
                         }
-                        a:hover, div:hover {
+                        a:hover,
+                        div:hover {
                             border-right: 3px solid #446084;
                             color: #111;
                         }

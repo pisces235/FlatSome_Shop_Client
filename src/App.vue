@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <Header class="header" id="header"  />
+        <Header class="header" id="header" />
         <div id="fb-root"></div>
         <v-main style="margin-top: 90px">
             <router-view></router-view>

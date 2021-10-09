@@ -243,7 +243,7 @@ export default {
             this.$store.commit("SET_CART");
         },
         setStockMS() {
-            this.stockMessage =[]
+            this.stockMessage = [];
             this.cart.forEach((c) => {
                 if (c.product.stock != c.quantity) this.stockMessage.push("");
                 else this.stockMessage.push("This product is out of stock");

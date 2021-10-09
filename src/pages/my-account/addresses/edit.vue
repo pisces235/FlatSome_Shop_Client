@@ -143,7 +143,7 @@ export default {
                         if (response.message != true) {
                             this.errors.push(response.message);
                         } else {
-                            alert("Your billing address is updated!")
+                            alert("Your billing address is updated!");
                             this.$router.push("/my-account/addresses");
                         }
                     });

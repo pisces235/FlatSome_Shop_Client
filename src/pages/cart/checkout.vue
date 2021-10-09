@@ -359,7 +359,10 @@ export default {
                     this.errors.push("You must input a name");
                 }
 
-                if (this.user.phoneNumber == "" || this.user.phoneNumber == null) {
+                if (
+                    this.user.phoneNumber == "" ||
+                    this.user.phoneNumber == null
+                ) {
                     this.errors.push("You must input a phone number");
                 }
             } else {

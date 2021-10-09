@@ -29,10 +29,7 @@
             :items="districts"
             label="District"
             dense
-            v-show="
-                province != '' &&
-                province != null
-            "
+            v-show="province != '' && province != null"
             @focus="getDistricts()"
         ></v-combobox>
         <v-combobox
@@ -41,10 +38,7 @@
             :items="wards"
             label="Ward"
             dense
-            v-show="
-                district != '' &&
-                district != null
-            "
+            v-show="district != '' && district != null"
             @focus="getWards()"
         ></v-combobox>
 
@@ -149,7 +143,7 @@ export default {
                         if (response.message != true) {
                             this.errors.push(response.message);
                         } else {
-                            alert("Your billing address is added!")
+                            alert("Your billing address is added!");
                             this.$router.push("/my-account/addresses");
                         }
                     });
@@ -169,22 +163,13 @@ export default {
                     this.errors.push("You must input a phone number");
                 }
             }
-            if (
-                this.province == "" ||
-                this.province == null
-            ) {
+            if (this.province == "" || this.province == null) {
                 this.errors.push("You must input a province");
             }
-            if (
-                this.district == "" ||
-                this.district == null
-            ) {
+            if (this.district == "" || this.district == null) {
                 this.errors.push("You must input a district");
             }
-            if (
-                this.ward == "" ||
-                this.ward == null
-            ) {
+            if (this.ward == "" || this.ward == null) {
                 this.errors.push("You must input a ward");
             }
         },

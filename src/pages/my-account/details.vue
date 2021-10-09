@@ -14,7 +14,7 @@
         ></v-text-field>
         <div class="title">
             Password Change
-            <hr>
+            <hr />
         </div>
         <v-text-field
             label="Current password (leave blank to leave unchanged)"
@@ -36,7 +36,7 @@
         ></v-text-field>
         <button @click="updateUser()">SAVE CHANGE</button>
         <div class="errors" v-for="e in errors" :key="e">
-            <p>{{e}}</p>
+            <p>{{ e }}</p>
         </div>
     </div>
 </template>
@@ -56,48 +56,59 @@ export default {
     },
     data() {
         return {
-            password : "",
+            password: "",
             currentPassword: "",
-            confirmPassword : "",
+            confirmPassword: "",
             errors: [],
         };
     },
     methods: {
         updateUser() {
             this.errors = [];
-            if(this.password == null) this.password = ""
-            if(this.currentPassword == null) this.currentPassword = ""
-            if(this.confirmPassword == null) this.confirmPassword = ""
+            if (this.password == null) this.password = "";
+            if (this.currentPassword == null) this.currentPassword = "";
+            if (this.confirmPassword == null) this.confirmPassword = "";
 
-            if(this.password != this.confirmPassword) {
-                this.errors.push("Confirm password must be the same as new password")
-            } else if(this.password == this.currentPassword && this.password != "") {
-                this.errors.push("Password mustn't be the same as current password")
+            if (this.password != this.confirmPassword) {
+                this.errors.push(
+                    "Confirm password must be the same as new password"
+                );
+            } else if (
+                this.password == this.currentPassword &&
+                this.password != ""
+            ) {
+                this.errors.push(
+                    "Password mustn't be the same as current password"
+                );
             } else {
                 let newUser = {
                     email: this.user.email,
                     name: this.user.name,
                     password: this.password,
-                    currentPassword : this.currentPassword,
-                }
+                    currentPassword: this.currentPassword,
+                };
                 let localUser = JSON.parse(window.localStorage.currentUser);
-                this.$store.dispatch("updateUser", {userId: localUser.id, newUser: newUser})
-                    .then((response) => {
-                        if(response.message == true) {
-                            alert("Your account is updated!")
-                            this.$router.go(0)
-                        } else {
-                            this.errors.push(response.message)
-                        }
+                this.$store
+                    .dispatch("updateUser", {
+                        userId: localUser.id,
+                        newUser: newUser,
                     })
+                    .then((response) => {
+                        if (response.message == true) {
+                            alert("Your account is updated!");
+                            this.$router.go(0);
+                        } else {
+                            this.errors.push(response.message);
+                        }
+                    });
             }
-        }
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-.container-fluid{
+.container-fluid {
     button {
         background-color: #446084;
         color: white;

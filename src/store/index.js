@@ -137,13 +137,13 @@ export default new Vuex.Store({
             state.product = product;
         },
         SET_USER_INFO(state, user) {
-            state.user = user
+            state.user = user;
         },
     },
     actions: {
-        async addOrder({commit}, newOrder) {
+        async addOrder({ commit }, newOrder) {
             try {
-                await api().post('/orders', newOrder);
+                await api().post("/orders", newOrder);
                 return { message: "success" };
             } catch (error) {
                 return { message: error.message };
@@ -203,24 +203,33 @@ export default new Vuex.Store({
             let response = await api().get(`/products/${slug}`);
             commit("SET_PRODUCT", response.data);
         },
-        async removeQuantity({commit}, cart) {
+        async removeQuantity({ commit }, cart) {
             await api().put("/products/removeQuantity", cart);
         },
-        async register({commit}, newUser) {
+        async register({ commit }, newUser) {
             let res = await api().post("/users/signup", newUser);
-            return { message: res.data.message}
+            return { message: res.data.message };
         },
         async loadUserById({ commit }, userId) {
             let res = await api().get(`/users/${userId}`);
-            commit('SET_USER_INFO', res.data);
+            commit("SET_USER_INFO", res.data);
         },
-        async updateUser({commit}, {userId, newUser}) {
+        async updateUser({ commit }, { userId, newUser }) {
             let res = await api().patch(`/users/${userId}`, newUser);
-            return { message: res.data.success}
+            return { message: res.data.success };
         },
-        async updateUserAddress({commit}, {email, name, phoneNumber, newAddress, id}) {
-            let res = await api().patch(`/users/edit/billing-address`, {email ,name, phoneNumber, newAddress, id});
-            return { message: res.data.success}
+        async updateUserAddress(
+            { commit },
+            { email, name, phoneNumber, newAddress, id }
+        ) {
+            let res = await api().patch(`/users/edit/billing-address`, {
+                email,
+                name,
+                phoneNumber,
+                newAddress,
+                id,
+            });
+            return { message: res.data.success };
         },
     },
     modules: {},

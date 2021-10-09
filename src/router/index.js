@@ -67,13 +67,13 @@ const routes = [
             },
         ],
     },
-    {path: "/account", name: "Account", component: Account,},
+    { path: "/account", name: "Account", component: Account },
     {
-        path: "/my-account", name: "MyAccount", component: MyAccount,
+        path: "/my-account",
+        name: "MyAccount",
+        component: MyAccount,
         beforeEnter: (to, from, next) => {
-            let currentUser = JSON.parse(
-                window.localStorage.currentUser
-            );
+            let currentUser = JSON.parse(window.localStorage.currentUser);
             if (currentUser && currentUser.typeAccount === "customer") {
                 next();
             } else {
@@ -109,7 +109,6 @@ const routes = [
         ],
     },
     { path: "/checkout", name: "CheckOutPage", component: CheckOut },
-
 ];
 
 const router = new VueRouter({

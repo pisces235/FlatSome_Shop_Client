@@ -125,12 +125,12 @@
                                 Out of stock
                             </button>
                             <button
-                        class="add-cart-btn"
-                        v-else
-                        @click.prevent="additemToCart(p)"
-                    >
-                        Add to cart
-                    </button>
+                                class="add-cart-btn"
+                                v-else
+                                @click.prevent="additemToCart(p)"
+                            >
+                                Add to cart
+                            </button>
                         </div>
                         <div class="detail-box">
                             <div class="type">
@@ -138,8 +138,17 @@
                                     {{ p.categories[0] }}
                                 </p>
                                 <p class="name-box">{{ p.name }}</p>
-                                <p class="price-box"> ${{ p.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
- }}</p>
+                                <p class="price-box">
+                                    ${{
+                                        p.price
+                                            .toFixed(2)
+                                            .toString()
+                                            .replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )
+                                    }}
+                                </p>
                             </div>
                         </div>
                     </a>
@@ -160,12 +169,12 @@
                                 Out of stock
                             </button>
                             <button
-                        class="add-cart-btn"
-                        v-else
-                        @click.prevent="addItemToCart(p)"
-                    >
-                        Add to cart
-                    </button>
+                                class="add-cart-btn"
+                                v-else
+                                @click.prevent="addItemToCart(p)"
+                            >
+                                Add to cart
+                            </button>
                         </div>
                         <div class="detail-box">
                             <div class="type">
@@ -173,8 +182,17 @@
                                     {{ p.categories[0] }}
                                 </p>
                                 <p class="name-box">{{ p.name }}</p>
-                                <p class="price-box"> ${{ p.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
- }}</p>
+                                <p class="price-box">
+                                    ${{
+                                        p.price
+                                            .toFixed(2)
+                                            .toString()
+                                            .replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )
+                                    }}
+                                </p>
                             </div>
                         </div>
                     </a>

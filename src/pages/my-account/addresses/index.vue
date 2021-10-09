@@ -6,15 +6,21 @@
         </p>
         <div class="contain-left">
             <p class="title">Billing Address</p>
-            <a class="" href="/my-account/add-address/billing" v-if="user.address.length == 0">Add</a>
+            <a
+                class=""
+                href="/my-account/add-address/billing"
+                v-if="user.address.length == 0"
+                >Add</a
+            >
             <a class="" href="/my-account/edit-address/billing" v-else>Edit</a>
             <div class="contain-address" v-if="user.address.length > 0">
-                <p>{{user.name}}</p>
+                <p>{{ user.name }}</p>
                 <p>
-                    {{user.address[0].left_address}}, {{user.address[0].ward}}
-                    , {{user.address[0].district}}, {{user.address[0].province}}
+                    {{ user.address[0].left_address }},
+                    {{ user.address[0].ward }} , {{ user.address[0].district }},
+                    {{ user.address[0].province }}
                 </p>
-                <p>{{user.phoneNumber}}</p>
+                <p>{{ user.phoneNumber }}</p>
             </div>
             <div class="contain-address" v-else>
                 <p><i>You have not set up this type of address yet.</i></p>
@@ -36,11 +42,9 @@ export default {
         ...mapState(["user"]),
     },
     data() {
-        return {
-        };
+        return {};
     },
-    methods: {
-    },
+    methods: {},
 };
 </script>
 

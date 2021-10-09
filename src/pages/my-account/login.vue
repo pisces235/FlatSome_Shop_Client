@@ -83,7 +83,7 @@
                         <button type="submit">REGISTER</button>
                     </div>
                     <div v-for="e in registerErrors" :key="e">
-                        <p style="color: red">{{e}}</p>
+                        <p style="color: red">{{ e }}</p>
                     </div>
                 </form>
             </div>
@@ -92,7 +92,6 @@
 </template>
 
 <script>
-
 export default {
     name: "Login",
     components: {},
@@ -117,38 +116,37 @@ export default {
             if (response.error) {
                 alert(response.error);
             } else {
-                window.localStorage.isLoggedIn = JSON.stringify(true)
-                window.location.pathname = "/"
+                window.localStorage.isLoggedIn = JSON.stringify(true);
+                window.location.pathname = "/";
             }
         },
         register() {
-            this.registerErrors = []
-            if(this.name == null || this.name == "") {
-                this.registerErrors.push("Full name must be require!")
+            this.registerErrors = [];
+            if (this.name == null || this.name == "") {
+                this.registerErrors.push("Full name must be require!");
             }
-            if(this.email == null || this.email == "") {
-                this.registerErrors.push("Email must be require!")
+            if (this.email == null || this.email == "") {
+                this.registerErrors.push("Email must be require!");
             }
-            if(this.password == null || this.password == "") {
-                this.registerErrors.push("Password must be require!")
+            if (this.password == null || this.password == "") {
+                this.registerErrors.push("Password must be require!");
             }
-            if(this.registerErrors.length == 0) {
+            if (this.registerErrors.length == 0) {
                 let newUser = {
                     email: this.email,
                     password: this.password,
-                    name: this.name
-                }
-                this.$store.dispatch("register", newUser)
-                    .then((response) => {
-                        if(response.message == true) {
-                            alert("You have successfully registered an account!")
-                            this.$router.go(0)
-                        } else {
-                            this.registerErrors.push(response.message)
-                        }
-                    })
+                    name: this.name,
+                };
+                this.$store.dispatch("register", newUser).then((response) => {
+                    if (response.message == true) {
+                        alert("You have successfully registered an account!");
+                        this.$router.go(0);
+                    } else {
+                        this.registerErrors.push(response.message);
+                    }
+                });
             }
-        }
+        },
     },
 };
 </script>

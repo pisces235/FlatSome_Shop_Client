@@ -48,8 +48,14 @@
                                 {{ p.categories[0] }}
                             </p>
                             <p class="name-box">{{ p.name }}</p>
-                            <p class="price-box"> ${{ p.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
- }}</p>
+                            <p class="price-box">
+                                ${{
+                                    p.price
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
                         </div>
                     </div>
                 </a>
@@ -94,8 +100,14 @@
                                 {{ p.categories[0] }}
                             </p>
                             <p class="name-box">{{ p.name }}</p>
-                            <p class="price-box"> ${{ p.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
- }}</p>
+                            <p class="price-box">
+                                ${{
+                                    p.price
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
                         </div>
                     </div>
                 </a>
@@ -115,8 +127,7 @@ export default {
         await this.$store.dispatch("loadProducts");
     },
     data() {
-        return {
-        };
+        return {};
     },
     methods: {
         getNewProducts() {
