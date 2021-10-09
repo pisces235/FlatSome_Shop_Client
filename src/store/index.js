@@ -3,7 +3,6 @@ import Vuex from "vuex";
 import jwt_decode from "jwt-decode";
 
 import api from "../service/api";
-import { updateUser } from "../../../server/controllers/user";
 
 Vue.use(Vuex);
 
