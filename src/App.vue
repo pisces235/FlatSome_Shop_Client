@@ -1,27 +1,19 @@
 <template>
     <v-app>
-        <Header class="header" id="header" v-if="!$route.meta.hideHeader" />
-        <AdminHeader
-            class="header"
-            v-if="$route.meta.hideHeader && !$route.meta.hideAdminHeader"
-        />
-
-        <v-main style="margin-top: 90px" v-if="!$route.meta.hideHeader">
-            <router-view></router-view>
-        </v-main>
-        <v-main v-if="$route.meta.hideHeader">
+        <Header class="header" id="header"  />
+        <div id="fb-root"></div>
+        <v-main style="margin-top: 90px">
             <router-view></router-view>
         </v-main>
 
         <footer id="footer">
-            <Footer v-if="!$route.meta.hideFooter" />
+            <Footer />
         </footer>
     </v-app>
 </template>
 
 <script>
 import Header from "./components/Header/PublicHeader.vue";
-import AdminHeader from "./components/Header/AdminHeader.vue";
 import Footer from "./components/Footer.vue";
 
 export default {
@@ -33,7 +25,6 @@ export default {
     components: {
         Header,
         Footer,
-        AdminHeader,
     },
 };
 </script>

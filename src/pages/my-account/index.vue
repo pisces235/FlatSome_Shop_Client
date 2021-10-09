@@ -1,262 +1,177 @@
 <template>
     <div class="container-fluid">
         <div class="account__title">
-            <div class="text-center">MY ACCOUNT</div>
-        </div>
-
-        <div class="contain-form">
-            <div class="contain-login">
-                <div class="login-title">LOGIN</div>
-
-                <form @submit.prevent="login">
-                    <div class="form-group">
-                        <label>Email address*</label>
-                        <input
-                            type="text"
-                            id="login_email"
-                            v-model="login_email"
-                            autocomplete="off"
-                        />
-                    </div>
-
-                    <div class="form-group">
-                        <label>Password*</label>
-                        <input
-                            type="password"
-                            id="login_password"
-                            v-model="login_password"
-                            autocomplete="off"
-                        />
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit">LOGIN</button>
-                    </div>
-
-                    <p>
-                        <router-link to="/" class="lost-password-link"
-                            >Lost your password?</router-link
-                        >
-                    </p>
-                </form>
+            <div class="text-left contain-title">
+                <p>MY ACCOUNT</p>
+                <p>{{ titlePage }}</p>
             </div>
-
-            <div class="contain-register">
-                <div class="login-title">REGISTER</div>
-
-                <form @submit.prevent="register">
-                    <div class="form-group">
-                        <label for="name">Full name*</label>
-                        <input type="text" id="name" v-model="name" />
+        </div>
+        <div class="container">
+            <div class="contain-left">
+                <div class="contain_img">
+                    <img src="../../assets/images/account.png" alt="" />
+                    <div class="name">{{ user.name }}</div>
+                </div>
+                <nav class="left-bar">
+                    <ul>
+                        <li><a href="/my-account">DASHBOARD</a></li>
+                        <li><a href="/my-account/orders">ORDERS</a></li>
+                        <li><a href="/my-account/addresses">ADDRESSES</a></li>
+                        <li><a href="/my-account/account-details">ACCOUNT DETAILS</a></li>
+                        <li><div @click.prevent="logoutUser">LOGOUT</div></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="contain-right">
+                <div v-if="link == '/my-account'">
+                    <p>Hello <b>{{user.name}}</b></p>
+                    <p>From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.</p>
+                    <div class="contain-btn">
+                        <a href="/my-account/orders">Orders</a>
+                        <a href="/my-account/addresses">Addresses</a>
+                        <a href="/my-account/account-details">Account Details</a>
                     </div>
-
-                    <div class="form-group">
-                        <label for="email">Email address*</label>
-                        <input
-                            type="text"
-                            id="email"
-                            v-model="email"
-                            autocomplete="off"
-                        />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password*</label>
-                        <input
-                            type="password"
-                            id="password"
-                            v-model="password"
-                            autocomplete="off"
-                        />
-                    </div>
-
-                    <p>
-                        Your personal data will be used to support your
-                        experience throughout this website, to manage access to
-                        your account, and for other purposes described in our
-                        <router-link to="/" class="privacy-policy-link"
-                            >privacy policy</router-link
-                        >.
-                    </p>
-
-                    <div class="form-group">
-                        <button type="submit">REGISTER</button>
-                    </div>
-                </form>
+                </div>
+                <div v-else>
+                    <router-view></router-view>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-// import { mapActions } from "vuex";
+import { mapState } from "vuex";
 
 export default {
-    name: "Login",
-    components: {},
+    name: "MyAccount",
+    created() {
+        if (JSON.parse(window.localStorage.currentUser) == {}) {
+            this.$router.push("account");
+        }
+        this.link = window.location.pathname;
+        if (this.link != "/my-account") {
+            this.titlePage = this.link
+                .replace("/my-account/", "")
+                .toUpperCase();
+        } else {
+            this.titlePage = "DASHBOARD";
+        }
+    },
+    mounted() {
+        this.localUser = JSON.parse(window.localStorage.currentUser);
+
+        this.$store.dispatch("loadUserById", this.localUser.id);
+    },
+    computed: {
+        ...mapState(["user"]),
+    },
     data() {
-        return {
-            email: "",
-            password: "",
-            name: "",
-            login_email: "",
-            login_password: "",
-        };
+        return {};
     },
     methods: {
-        async login() {
-            let loginInfo = {
-                email: this.login_email,
-                password: this.login_password,
-            };
-            let response = await this.$store.dispatch("loginUser", loginInfo);
-            if (response.error) {
-                alert(response.error);
-            } else {
-                this.$router.push("/");
-            }
+        logoutUser() {
+            this.$store.dispatch("logoutUser");
+            this.isLoggedIn = false;
+            window.localStorage.isLoggedIn = JSON.stringify(false)
+            this.$router.push("/");
         },
     },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .container-fluid {
-    padding: 0 !important;
-
     .account__title {
-        height: 65px;
         background-color: #f7f7f7;
-        .text-center {
-            line-height: 65px;
+        height: fit-content;
+        .text-left {
             color: #555555;
             font-weight: 700;
             font-size: 27px;
         }
-    }
-    .contain-form {
-        width: 70%;
-        margin-left: 15%;
-        display: flex;
-        justify-content: flex-start;
-        .contain-login {
-            width: 47%;
-            padding-right: 3%;
-            .login-title {
-                margin-top: 35px;
-                color: #555555;
-                font-weight: 700;
-                font-size: 20px;
+        .contain-title {
+            width: 70%;
+            margin: 0 15%;
+            padding: 10px 0;
+            p {
+                margin: 0;
+                padding: 0;
             }
-            form {
-                .form-group {
-                    margin-top: 14px;
-                    label {
-                        color: #222222;
-                        font-size: 14px;
-                        font-weight: 700;
-                    }
-                    input {
-                        -webkit-text-size-adjust: 100%;
-                        -webkit-tap-highlight-color: transparent;
-                        --primary-color: #446084;
-                        -webkit-font-smoothing: antialiased;
-                        -webkit-box-direction: normal;
-                        font: inherit;
-                        overflow: visible;
-                        touch-action: manipulation;
-                        margin-bottom: 1em;
-                        box-sizing: border-box;
-                        border: 1px solid #ddd;
-                        padding: 0 0.75em;
-                        height: 2.507em;
-                        font-size: 0.97em;
-                        border-radius: 0;
-                        max-width: 100%;
-                        width: 100%;
-                        vertical-align: middle;
-                        color: #333;
-                        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-                        appearance: none;
-                    }
-                    button {
-                        background-color: #446084;
-                        color: #fff;
-                        padding: 10px 20px;
-                        font-size: 16px;
-                        font-weight: 700;
-                    }
-                    button:hover {
-                        background-color: #3d5779;
-                    }
+            p:last-child {
+                font-weight: 400;
+                font-size: 13px;
+            }
+        }
+    }
+    .container {
+        width: 70%;
+        margin: 20px 15%;
+        .contain-left {
+            width: 25%;
+            float: left;
+            border-right: 1px solid #ccc;
+            .contain_img {
+                display: flex;
+                justify-content: flex-start;
+                img {
+                    width: 130px;
                 }
-                p {
-                    margin-top: 10px;
-                    .lost-password-link {
-                        color: #111111 !important;
+                .name {
+                    line-height: 90px;
+                }
+            }
+            .left-bar {
+                ul {
+                    margin: 0;
+                    padding: 0 0 20px 0;
+                    li {
+                        border-bottom: 1px solid #ccc;
+                        a, div {
+                            font-size: 13px;
+                            font-weight: 600;
+                            color: #ccc;
+                            padding: 15px 0;
+                            display: block;
+                            cursor: pointer;
+                        }
+                        a:hover, div:hover {
+                            border-right: 3px solid #446084;
+                            color: #111;
+                        }
+                    }
+                    li:last-child {
+                        border: none;
                     }
                 }
             }
         }
-        .contain-register {
-            padding-left: 3%;
-            width: 47%;
-            border-left: 1px solid #ececec;
-            .login-title {
-                margin-top: 35px;
-                color: #555555;
-                font-weight: 700;
-                font-size: 20px;
+        .contain-right {
+            width: 75%;
+            float: left;
+            padding-left: 30px;
+            p {
+                font-size: 16px;
+                font-weight: 400;
+                color: gray;
             }
-            form {
-                .form-group {
-                    margin-top: 14px;
-                    label {
-                        color: #222222;
-                        font-size: 14px;
-                        font-weight: 700;
-                    }
-                    input {
-                        -webkit-text-size-adjust: 100%;
-                        -webkit-tap-highlight-color: transparent;
-                        --primary-color: #446084;
-                        -webkit-font-smoothing: antialiased;
-                        -webkit-box-direction: normal;
-                        font: inherit;
-                        overflow: visible;
-                        touch-action: manipulation;
-                        margin-bottom: 1em;
-                        box-sizing: border-box;
-                        border: 1px solid #ddd;
-                        padding: 0 0.75em;
-                        height: 2.507em;
-                        font-size: 0.97em;
-                        border-radius: 0;
-                        max-width: 100%;
-                        width: 100%;
-                        vertical-align: middle;
-                        color: #333;
-                        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-                        appearance: none;
-                    }
-                    button {
-                        background-color: #446084;
-                        color: #fff;
-                        padding: 10px 20px;
-                        font-size: 16px;
-                        font-weight: 700;
-                    }
-                    button:hover {
-                        background-color: #3d5779;
-                    }
+            .contain-btn {
+                display: flex;
+                justify-content: space-evenly;
+                a {
+                    display: block;
+                    width: 240px;
+                    border: 1px solid #111;
+                    color: #111;
+                    font-size: 21px;
+                    font-weight: 400;
+                    text-align: center;
+                    border-radius: 5px;
+                    padding: 12px 0;
                 }
-                p {
-                    margin-top: 10px;
-                    color: #777777;
-                    font-size: 14px;
-                    .privacy-policy-link {
-                        color: #111111 !important;
-                    }
+                a:hover {
+                    background-color: #111;
+                    color: white;
                 }
             }
         }

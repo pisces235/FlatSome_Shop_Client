@@ -28,16 +28,10 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/@splidejs/splide@1.3.3/dist/css/splide.min.css"
         />
+
     </head>
     <body>
-        <div id="fb-root"></div>
-        <script
-            async
-            defer
-            crossorigin="anonymous"
-            src="https://connect.facebook.net/en_VN/sdk.js#xfbml=1&version=v12.0&appId= 572006430623594&autoLogAppEvents=1"
-            nonce="1grGNKJD"
-        ></script>
+
         <noscript>
             <strong
                 >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't
@@ -45,7 +39,7 @@
                 continue.</strong
             >
         </noscript>
-        <div id="app"></div>
+        <div id="app"><div id="fb-root"></div></div>
         <!-- built files will be auto injected -->
 
         <script
@@ -64,5 +58,7 @@
             crossorigin="anonymous"
         ></script>
         <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@1.3.3/dist/js/splide.min.js"></script>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v12.0&appId=572006430623594&autoLogAppEvents=1" nonce="pdw4oQDy"></script>
     </body>
 </html>

@@ -7,32 +7,111 @@
             </label>
 
             <div class="navbar-logo">
-                <router-link to="/"
+                <a href="/"
                     ><img src="../../assets/images/logo.png" alt=""
-                /></router-link>
+                /></a>
             </div>
 
             <nav class="nav__pc">
                 <ul class="nav__list">
                     <li>
-                        <router-link to="/" class="nav__link">HOME</router-link>
+                        <v-icon class="icon-search">mdi-magnify</v-icon>
+                        <div class="contain-search">
+                            <div class="contain-input">
+                                <input
+                                    type="text"
+                                    name=""
+                                    id="search-input"
+                                    v-model="search"
+                                    @change="getSearchItems()"
+                                />
+                                <button @click="getSearchItems()">
+                                    <v-icon>mdi-magnify</v-icon>
+                                </button>
+                            </div>
+
+                            <div
+                                class="contain-item"
+                                v-for="p in searchItems"
+                                :key="p._id"
+                            >
+                                <a
+                                    :href="
+                                        '/shop/' +
+                                        p.categories[0].toLowerCase() +
+                                        '/' +
+                                        p.categories[1].toLowerCase() +
+                                        '/' +
+                                        p.slug
+                                    "
+                                    v-if="p.categories.length > 1"
+                                >
+                                    <img :src="p.gallery[0]" alt="" />
+                                    <div class="name">
+                                        <span>{{ p.name }}</span>
+                                    </div>
+                                    <p class="price">
+                                        ${{
+                                            p.price
+                                                .toFixed(2)
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ","
+                                                )
+                                        }}
+                                    </p>
+                                </a>
+
+                                <a
+                                    :href="
+                                        '/shop/' +
+                                        p.categories[0].toLowerCase() +
+                                        '/' +
+                                        p.slug
+                                    "
+                                    v-else
+                                >
+                                    <img :src="p.gallery[0]" alt="" />
+                                    <div class="name">
+                                        <span>{{ p.name }}</span>
+                                    </div>
+                                    <p class="price">
+                                        ${{
+                                            p.price
+                                                .toFixed(2)
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ","
+                                                )
+                                        }}
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
                     </li>
                     <li>
-                        <router-link to="/shop" class="nav__link"
-                            >SHOP</router-link
-                        >
+                        <a href="/" class="nav__link">HOME</a>
                     </li>
                     <li>
-                        <router-link to="/" class="nav__link">BLOG</router-link>
+                        <a href="/shop" class="nav__link">SHOP</a>
                     </li>
                 </ul>
             </nav>
             <div class="navbar-cart">
-                <router-link to="/cart" class="nav__link" title="cart">
-                    <span>CART / ${{ getSubToTal() }}</span>
+                <a href="/cart" class="nav__link" title="cart">
+                    <span
+                        >CART / ${{
+                            getSubToTal()
+                                .toFixed(2)
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }}</span
+                    >
                     <label class="count-cart">{{ cart.length }}</label>
                     <img src="../../assets/images/shopping-bag-icon.png"
-                /></router-link>
+                /></a>
 
                 <div class="contain_small_cart">
                     <div class="arrow"></div>
@@ -47,7 +126,15 @@
                                     }}</span>
                                     x
                                     <span class="item_price"
-                                        >${{ item.product.price }}</span
+                                        >${{
+                                            item.product.price
+                                                .toFixed(2)
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ","
+                                                )
+                                        }}</span
                                     >
                                 </p>
 
@@ -59,18 +146,41 @@
                             </div>
                         </div>
                         <p class="cart_subtotal">
-                            Subtotal: ${{ getSubToTal() }}
+                            Subtotal: ${{
+                                getSubToTal()
+                                    .toFixed(2)
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }}
                         </p>
                     </div>
                     <p v-else class="text-center">No products in the cart.</p>
                 </div>
             </div>
             <div class="nav-account">
-                <span v-if="isLoggedIn">
-                    <div @click.prevent="logoutUser">LOGOUT</div>
+                <span v-if="isLoggedIn == true">
+                    <div>
+                        <a href="/my-account">MY ACCOUNT</a>
+                        <nav class="dropdown">
+                            <ul>
+                                <li><a href="/my-account/orders">Orders</a></li>
+                                <li>
+                                    <a href="/my-account/addresses"
+                                        >Addresses</a
+                                    >
+                                </li>
+                                <li>
+                                    <a href="/my-account/account-details"
+                                        >Account details</a
+                                    >
+                                </li>
+                                <li><div @click="logoutUser">Logout</div></li>
+                            </ul>
+                        </nav>
+                    </div>
                 </span>
                 <span v-else>
-                    <router-link to="/my-account">LOGIN </router-link>
+                    <a href="/account">LOGIN </a>
                 </span>
             </div>
             <input
@@ -88,32 +198,24 @@
                 </label>
                 <ul class="nav__mobile-list">
                     <li>
-                        <router-link to="/" class="nav__mobile-link"
-                            >HOME</router-link
-                        >
+                        <a href="/" class="nav__mobile-link">HOME</a>
                     </li>
                     <li>
-                        <router-link to="/shop" class="nav__mobile-link"
-                            >SHOP</router-link
-                        >
+                        <a href="/shop" class="nav__mobile-link">SHOP</a>
                     </li>
                     <li>
-                        <router-link to="/" class="nav__mobile-link"
-                            >BLOG</router-link
-                        >
+                        <a href="/" class="nav__mobile-link">BLOG</a>
                     </li>
-                    <li v-if="isLoggedIn">
+                    <li v-if="isLoggedIn == true">
                         <div
                             class="nav__mobile-link"
                             @click.prevent="logoutUser"
                         >
-                            LOGOUT
+                            MY ACCOUNT
                         </div>
                     </li>
                     <li v-else>
-                        <router-link to="/my-account" class="nav__mobile-link"
-                            >LOGIN</router-link
-                        >
+                        <a href="/account" class="nav__mobile-link">LOGIN</a>
                     </li>
                 </ul>
             </div>
@@ -125,33 +227,35 @@
 import { mapState } from "vuex";
 export default {
     created() {
-        this.localUser = JSON.parse(window.localStorage.currentUser);
-        if (this.localUser !== this.currentUser) {
-            window.localStorage.currentUser = JSON.stringify({});
+        this.currentUser = JSON.parse(window.localStorage.currentUser);
+
+        if (this.currentUser.name) {
+            window.localStorage.isLoggedIn = JSON.stringify(true);
+            this.isLoggedIn = JSON.parse(window.localStorage.isLoggedIn);
+        } else {
+            window.localStorage.isLoggedIn = JSON.stringify(false);
+            this.isLoggedIn = JSON.parse(window.localStorage.isLoggedIn);
         }
     },
     mounted() {
+        this.$store.dispatch("loadProducts");
         this.$store.commit("SET_CART");
     },
     computed: {
-        ...mapState(["currentUser", "cart"]),
-
-        isLoggedIn() {
-            if (this.currentUser.name) {
-                return true;
-            } else {
-                return false;
-            }
-        },
+        ...mapState(["cart", "products"]),
     },
     data() {
         return {
             newCart: [],
+            searchItems: [],
+            search: "",
         };
     },
     methods: {
         logoutUser() {
             this.$store.dispatch("logoutUser");
+            this.isLoggedIn = false;
+            window.localStorage.isLoggedIn = JSON.stringify(false);
             this.$router.go(0);
         },
         getSubToTal() {
@@ -168,6 +272,20 @@ export default {
             newCart.splice(index, 1);
             window.localStorage.cart = JSON.stringify(newCart);
             this.$store.commit("SET_CART");
+        },
+        getSearchItems() {
+            this.searchItems = [];
+            if (this.search != "" && this.search != null) {
+                this.products.forEach((product) => {
+                    if (
+                        product.name
+                            .toLowerCase()
+                            .includes(this.search.toLowerCase())
+                    ) {
+                        this.searchItems.push(product);
+                    }
+                });
+            }
         },
     },
 };
@@ -194,10 +312,40 @@ header {
             line-height: 90px;
             float: right;
             margin-right: 14px;
+            position: relative;
             a {
-                color: rgba(17, 17, 17, 0.85);
+                color: #7d7d7d;
+            }
+            .dropdown {
+                display: none;
+                position: absolute;
+                top: 70px;
+                opacity: 1 !important;
+                background-color: white;
+                ul {
+                    margin: 0;
+                    padding: 0;
+                    box-shadow: 2px 2px 2px 2px #888888;
+                    top: -30px;
+                    width: 265px;
+                    li {
+                        border-bottom: 1px solid #ccc;
+                        line-height: 40px;
+                        margin: 0 20px;
+                        a,
+                        div {
+                            display: block;
+                            padding-left: 15px;
+                            cursor: pointer;
+                        }
+                    }
+                }
             }
         }
+        .nav-account:hover .dropdown {
+            display: block;
+        }
+
         .navbar_btn {
             display: none;
             color: #7d7d7d;
@@ -227,6 +375,83 @@ header {
                         font-size: 14px;
                         color: #777777;
                         font-weight: 700;
+                    }
+                    .icon-search {
+                        cursor: pointer;
+                        display: block;
+                        line-height: 90px;
+                    }
+                    .contain-search {
+                        display: none;
+                        position: absolute;
+                        background-color: white;
+                        top: 67px;
+                        max-width: 400px;
+                        box-shadow: 2px 2px 2px 2px #888888;
+                        padding: 20px;
+                        overflow-y: auto;
+                        .contain-input {
+                            margin-bottom: 15px;
+                            #search-input {
+                                height: 35px;
+                                width: calc(100% - 35px);
+                                float: left;
+                                outline: none;
+                                border: solid 1px #ccc;
+                                font-weight: 400;
+                                font-size: 16px;
+                            }
+                            button {
+                                width: 35px;
+                                height: 35px;
+                                background-color: #d26e4b;
+                                display: block;
+                                padding: 15px;
+                                position: relative;
+                                float: left;
+                                i {
+                                    color: white;
+                                    position: absolute;
+                                    top: 7px;
+                                    left: 7px;
+                                }
+                            }
+                            button:hover {
+                                background-color: #a95a3d;
+                            }
+                        }
+
+                        .contain-item {
+                            width: 100%;
+                            border-bottom: 1px solid #ccc;
+                            float: left;
+                            a {
+                                color: #777;
+                                img {
+                                    width: 50px;
+                                    height: 50px;
+                                    border-radius: 50%;
+                                    float: left;
+                                    margin: 10px 0 10px 0;
+                                }
+                                .name {
+                                    float: left;
+                                    line-height: 50px;
+                                    margin: 10px 0 10px 10px;
+                                }
+                                .price {
+                                    float: right;
+                                    max-width: 60px;
+                                    line-height: 50px;
+                                    margin: 10px 0 10px 0;
+                                    text-align: right;
+                                }
+                            }
+                        }
+                    }
+                    .icon-search:hover ~ .contain-search,
+                    .contain-search:hover {
+                        display: block;
                     }
                 }
             }

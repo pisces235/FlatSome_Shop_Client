@@ -3,20 +3,21 @@ import VueRouter from "vue-router";
 
 import Home from "../pages";
 import Shop from "../pages/shop";
-import Account from "../pages/my-account";
+
+import Account from "../pages/my-account/login.vue";
+import MyAccount from "../pages/my-account/index.vue";
+import Addresses from "../pages/my-account/addresses";
+import EditAddress from "../pages/my-account/addresses/edit.vue";
+import AddAddress from "../pages/my-account/addresses/add.vue";
+import Orders from "../pages/my-account/orders.vue";
+import AccountDetails from "../pages/my-account/details.vue";
+
 import Category from "../pages/shop/category";
 import CategoryChild from "../pages/shop/category_child";
 import Detail from "../pages/shop/detail";
 import Cart from "../pages/cart";
 import CheckOut from "../pages/cart/checkout.vue";
-
-import AdminHome from "../pages/admin";
-import AdminLogin from "../pages/admin/login";
-import AdminAccounts from "../pages/admin/accounts";
-import AdminProducts from "../pages/admin/products";
-import AdminTrashProducts from "../pages/admin/products/trashProducts.vue";
-import AdminAddProduct from "../pages/admin/products/addNewProduct";
-import AdminEditProduct from "../pages/admin/products/editProduct";
+import Confirm from "../pages/cart/confirm.vue";
 
 import ErrorPage from "../pages/error";
 
@@ -48,6 +49,7 @@ const routes = [
         ],
     },
     { path: "/cart", name: "Cart", component: Cart },
+    { path: "/confirm", name: "Confirm", component: Confirm },
     {
         path: "/product-category",
         name: "Shop",
@@ -65,63 +67,49 @@ const routes = [
             },
         ],
     },
-    { path: "/my-account", name: "Account", component: Account },
-    { path: "/checkout", name: "CheckOutPage", component: CheckOut },
-
+    {path: "/account", name: "Account", component: Account,},
     {
-        path: "/admin",
-        name: "AdminHome",
-        component: AdminHome,
-        meta: { hideHeader: true, hideFooter: true },
+        path: "/my-account", name: "MyAccount", component: MyAccount,
         beforeEnter: (to, from, next) => {
-            let currentAdminUser = JSON.parse(
-                window.localStorage.currentAdminUser
+            let currentUser = JSON.parse(
+                window.localStorage.currentUser
             );
-            if (currentAdminUser && currentAdminUser.typeAccount === "admin") {
+            if (currentUser && currentUser.typeAccount === "customer") {
                 next();
             } else {
-                next("/admin/login");
+                next("/account");
             }
         },
         children: [
             {
-                path: "accounts",
-                name: "AdminAccounts",
-                component: AdminAccounts,
-                meta: { hideHeader: true, hideFooter: true },
+                path: "addresses",
+                name: "Addresses",
+                component: Addresses,
             },
             {
-                path: "products",
-                name: "AdminProducts",
-                component: AdminProducts,
-                meta: { hideHeader: true, hideFooter: true },
+                path: "orders",
+                name: "Orders",
+                component: Orders,
             },
             {
-                path: "products/trash",
-                name: "AdminTrashProducts",
-                component: AdminTrashProducts,
-                meta: { hideHeader: true, hideFooter: true },
+                path: "account-details",
+                name: "AccountDetails",
+                component: AccountDetails,
             },
             {
-                path: "product/addNew",
-                name: "AdminAddProduct",
-                component: AdminAddProduct,
-                meta: { hideHeader: true, hideFooter: true },
+                path: "edit-address/billing",
+                name: "EditAddress",
+                component: EditAddress,
             },
             {
-                path: "product/edit/:slug",
-                name: "AdminEditProduct",
-                component: AdminEditProduct,
-                meta: { hideHeader: true, hideFooter: true },
+                path: "add-address/billing",
+                name: "AddAddress",
+                component: AddAddress,
             },
         ],
     },
-    {
-        path: "/admin/login",
-        name: "AdminLogin",
-        component: AdminLogin,
-        meta: { hideHeader: true, hideFooter: true },
-    },
+    { path: "/checkout", name: "CheckOutPage", component: CheckOut },
+
 ];
 
 const router = new VueRouter({

@@ -90,9 +90,9 @@
             <div class="review" v-show="showReview">
                 <div
                     class="fb-comments"
-                    data-href="https://flatsome-shop.netlify.app/"
+                    data-href="https://flatsome-shop.netlify.app"
                     data-width=""
-                    data-numposts="8"
+                    data-numposts="10"
                 ></div>
             </div>
         </div>
@@ -124,9 +124,13 @@
                             >
                                 Out of stock
                             </button>
-                            <button class="add-cart-btn" v-else>
-                                Add to cart
-                            </button>
+                            <button
+                        class="add-cart-btn"
+                        v-else
+                        @click.prevent="additemToCart(p)"
+                    >
+                        Add to cart
+                    </button>
                         </div>
                         <div class="detail-box">
                             <div class="type">
@@ -134,10 +138,8 @@
                                     {{ p.categories[0] }}
                                 </p>
                                 <p class="name-box">{{ p.name }}</p>
-                                <p class="price-box" v-if="p.price % 1 == 0">
-                                    ${{ p.price }}.00
-                                </p>
-                                <p class="price-box" v-else>${{ p.price }}0</p>
+                                <p class="price-box"> ${{ p.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+ }}</p>
                             </div>
                         </div>
                     </a>
@@ -157,9 +159,13 @@
                             >
                                 Out of stock
                             </button>
-                            <button class="add-cart-btn" v-else>
-                                Add to cart
-                            </button>
+                            <button
+                        class="add-cart-btn"
+                        v-else
+                        @click.prevent="addItemToCart(p)"
+                    >
+                        Add to cart
+                    </button>
                         </div>
                         <div class="detail-box">
                             <div class="type">
@@ -167,7 +173,8 @@
                                     {{ p.categories[0] }}
                                 </p>
                                 <p class="name-box">{{ p.name }}</p>
-                                <p class="price-box">${{ p.price }},00</p>
+                                <p class="price-box"> ${{ p.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+ }}</p>
                             </div>
                         </div>
                     </a>
@@ -185,7 +192,6 @@ export default {
     created() {
         this.link = window.location.href;
         this.options = {
-            type: "loop",
             perMove: 1,
             rewind: true,
             autoWidth: true,
@@ -246,6 +252,12 @@ export default {
             this.$store.dispatch("addToCart", {
                 product: this.product,
                 quantity: this.quantity,
+            });
+        },
+        addItemToCart(product) {
+            this.$store.dispatch("addToCart", {
+                product: product,
+                quantity: 1,
             });
         },
     },

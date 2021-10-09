@@ -48,10 +48,8 @@
                                 {{ p.categories[0] }}
                             </p>
                             <p class="name-box">{{ p.name }}</p>
-                            <p class="price-box" v-if="p.price % 1 == 0">
-                                ${{ p.price }}.00
-                            </p>
-                            <p class="price-box" v-else>${{ p.price }}0</p>
+                            <p class="price-box"> ${{ p.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+ }}</p>
                         </div>
                     </div>
                 </a>
@@ -96,10 +94,8 @@
                                 {{ p.categories[0] }}
                             </p>
                             <p class="name-box">{{ p.name }}</p>
-                            <p class="price-box" v-if="p.price % 1 == 0">
-                                ${{ p.price }}.00
-                            </p>
-                            <p class="price-box" v-else>${{ p.price }}0</p>
+                            <p class="price-box"> ${{ p.price.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+ }}</p>
                         </div>
                     </div>
                 </a>
@@ -115,11 +111,12 @@ export default {
     computed: {
         ...mapState(["products"]),
     },
-    mounted() {
-        this.$store.dispatch("loadProducts");
+    async mounted() {
+        await this.$store.dispatch("loadProducts");
     },
     data() {
-        return {};
+        return {
+        };
     },
     methods: {
         getNewProducts() {

@@ -32,7 +32,13 @@
                                 "
                             >
                                 <img :src="item.product.gallery[0]" alt="" />
-                                <p>{{ item.product.name }}</p>
+                                <p>
+                                    <span>{{ item.product.name }}</span>
+
+                                    <span class="stockMs"
+                                        >{{ stockMessage[index] }}
+                                    </span>
+                                </p>
                             </a>
                             <a
                                 v-else
@@ -44,11 +50,24 @@
                                 "
                             >
                                 <img :src="item.product.gallery[0]" alt="" />
-                                <p>{{ item.product.name }}</p>
+                                <p>
+                                    <span>{{ item.product.name }}</span>
+
+                                    <span class="stockMs"
+                                        >{{ stockMessage[index] }}
+                                    </span>
+                                </p>
                             </a>
                         </td>
                         <td class="price">
-                            <p>${{ item.product.price }}</p>
+                            <p class="price-box">
+                                ${{
+                                    item.product.price
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
                         </td>
                         <td class="contain_qty">
                             <button
@@ -69,11 +88,31 @@
                             <button
                                 class="plus-btn"
                                 @click="addquantity(index)"
+                                v-if="
+                                    stockMessage[index] == '' &&
+                                    item.product.stock != item.quantity
+                                "
+                                enabled
+                            >
+                                +
+                            </button>
+                            <button
+                                class="plus-btn opacity-50"
+                                @click="addquantity(index)"
+                                v-else
+                                disabled
                             >
                                 +
                             </button>
                         </td>
-                        <td class="subToTal">${{ getSubToTal(index) }}</td>
+                        <td class="subToTal">
+                            ${{
+                                getSubToTal(index)
+                                    .toFixed(2)
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }}
+                        </td>
                     </tr>
                     <tr class="contain-btn">
                         <td colspan="2">
@@ -95,7 +134,12 @@
                     <tr>
                         <td>Subtotal</td>
                         <td class="text-right bold">
-                            ${{ getCartSubToTal() }}
+                            ${{
+                                getCartSubToTal()
+                                    .toFixed(2)
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }}
                         </td>
                     </tr>
                     <tr>
@@ -104,12 +148,24 @@
                             <p>Enter your address to view shipping options.</p>
                             <p>Calculate shipping</p>
                         </td>
-                        <td v-else class="text-right">${{ ship }}</td>
+                        <td v-else class="text-right">
+                            ${{
+                                ship
+                                    .toFixed(2)
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }}
+                        </td>
                     </tr>
                     <tr>
                         <td>Total</td>
                         <td class="text-right bold">
-                            ${{ getCartSubToTal() + ship }}
+                            ${{
+                                (getCartSubToTal() + ship)
+                                    .toFixed(2)
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }}
                         </td>
                     </tr>
                     <tr>
@@ -135,6 +191,8 @@ import { mapState } from "vuex";
 export default {
     mounted() {
         this.$store.commit("SET_CART");
+        this.stockMessage = [];
+        this.setStockMS();
     },
     computed: {
         ...mapState(["cart"]),
@@ -142,17 +200,26 @@ export default {
     data() {
         return {
             ship: 0,
+            stockMessage: [],
         };
     },
     methods: {
         addquantity(index) {
-            this.cart[index].quantity += 1;
-            window.localStorage.cart = JSON.stringify(this.cart);
+            if (this.cart[index].quantity < this.cart[index].product.stock) {
+                this.cart[index].quantity += 1;
+                window.localStorage.cart = JSON.stringify(this.cart);
+            }
+            if (this.cart[index].quantity == this.cart[index].product.stock) {
+                this.stockMessage[index] = "This product is out of stock";
+            }
         },
         removequantity(index) {
             if (this.cart[index].quantity > 1) {
                 this.cart[index].quantity -= 1;
                 window.localStorage.cart = JSON.stringify(this.cart);
+            }
+            if (this.cart[index].quantity != this.cart[index].product.stock) {
+                this.stockMessage[index] = "";
             }
         },
         getSubToTal(index) {
@@ -175,6 +242,13 @@ export default {
             window.localStorage.cart = JSON.stringify(newCart);
             this.$store.commit("SET_CART");
         },
+        setStockMS() {
+            this.stockMessage =[]
+            this.cart.forEach((c) => {
+                if (c.product.stock != c.quantity) this.stockMessage.push("");
+                else this.stockMessage.push("This product is out of stock");
+            });
+        },
     },
 };
 </script>
@@ -191,8 +265,8 @@ export default {
     .contain-cart {
         margin-top: 55px;
         .cart_left {
-            width: 60%;
-            padding-right: 2.5%;
+            width: 62.5%;
+            padding-right: 30px;
             margin-bottom: 25px;
             border-right: #ccc solid 2px;
             float: left;
@@ -223,6 +297,17 @@ export default {
                             font-size: 14px;
                             font-weight: 400;
                             color: #111;
+                            max-height: 90px;
+                            position: relative;
+                            .stockMs {
+                                color: red;
+                                font-size: 14px;
+                                font-weight: 400;
+                                position: absolute;
+                                width: 260px;
+                                display: block;
+                                top: 30px;
+                            }
                         }
                         .remove-btn {
                             float: left;
@@ -244,21 +329,25 @@ export default {
                         p {
                             margin: 0;
                             line-height: 90px;
+                            padding: 0 10px;
                         }
                     }
                     .contain_qty {
                         text-align: center;
+                        width: 101px;
                         .minus-btn,
                         .plus-btn {
                             width: 28px;
                             height: 45px;
                             background-color: #f9f9f9;
                             border: solid 1px #ccc;
+                            float: left;
                         }
                         .quantity {
                             outline: none;
                             width: 45px;
                             height: 45px;
+                            float: left;
                             border: solid 1px #ccc;
                             text-align: center;
                         }
@@ -302,7 +391,7 @@ export default {
             }
         }
         .cart_right {
-            width: 37.5%;
+            width: 35%;
             margin-left: 2.5%;
             float: left;
             table {

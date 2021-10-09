@@ -3,19 +3,19 @@ import Vuex from "vuex";
 import jwt_decode from "jwt-decode";
 
 import api from "../service/api";
+import { updateUser } from "../../../server/controllers/user";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
         users: [],
+        user: {},
         currentUser: {},
-        currentAdminUser: {},
         products: [],
         newProducts: [],
         relatedProducts: [],
         categories: [],
-        deletedProducts: [],
         product: {},
         cart: [],
         blogs: [],
@@ -114,14 +114,7 @@ export default new Vuex.Store({
             state.currentUser = user;
             window.localStorage.currentUser = JSON.stringify(user);
         },
-        LOGOUT_ADMINUSER(state) {
-            state.currentAdminUser = {};
-            window.localStorage.currentAdminUser = JSON.stringify({});
-        },
-        SET_CURRENT_ADMINUSER(state, user) {
-            state.currentAdminUser = user;
-            window.localStorage.currentAdminUser = JSON.stringify(user);
-        },
+
         SET_PRODUCTS(state, products) {
             state.products = products;
         },
@@ -140,17 +133,17 @@ export default new Vuex.Store({
             }
             state.relatedProducts = newArray;
         },
-        SET_DELETED_PRODUCTS(state, products) {
-            state.deletedProducts = products;
-        },
         SET_PRODUCT(state, product) {
             state.product = product;
         },
+        SET_USER_INFO(state, user) {
+            state.user = user
+        },
     },
     actions: {
-        async addProduct(newProduct) {
+        async addOrder({commit}, newOrder) {
             try {
-                await api().post(`/products`, newProduct);
+                await api().post('/orders', newOrder);
                 return { message: "success" };
             } catch (error) {
                 return { message: error.message };
@@ -159,45 +152,9 @@ export default new Vuex.Store({
         addToCart({ commit }, { product, quantity }) {
             commit("ADD_TO_CART", { product, quantity });
         },
-        async deleteProduct(slug) {
-            try {
-                await api().delete(`/products/${slug}/force`);
-            } catch (error) {
-                return { message: error.message };
-            }
-        },
         async loadUsers({ commit }) {
             let response = await api().get("/users");
             commit("SET_USERS", response.data);
-        },
-        loadCurrentAdminUser({ commit }) {
-            let user = JSON.parse(window.localStorage.currentAdminUser);
-            commit("SET_CURRENT_ADMINUSER", user);
-        },
-        async loginAdminUser({ commit }, loginInfo) {
-            try {
-                let response = await api().post("/users/signin", {
-                    email: loginInfo.email,
-                    password: loginInfo.password,
-                });
-                let decode = jwt_decode(response.data.info.token);
-                let user = {
-                    name: response.data.info.name,
-                    id: decode.sub,
-                    typeAccount: response.data.info.typeAccount,
-                };
-
-                commit("SET_CURRENT_ADMINUSER", user);
-
-                return user;
-            } catch {
-                return {
-                    error: "Email / password combination was incorrect. Please try again!",
-                };
-            }
-        },
-        logoutAdminUser({ commit }) {
-            commit("LOGOUT_ADMINUSER");
         },
         async loginUser({ commit }, loginInfo) {
             try {
@@ -246,26 +203,24 @@ export default new Vuex.Store({
             let response = await api().get(`/products/${slug}`);
             commit("SET_PRODUCT", response.data);
         },
-        async trashProduct(slug) {
-            try {
-                await api().delete(`/products/${slug}`);
-            } catch (error) {
-                return { message: error.message };
-            }
+        async removeQuantity({commit}, cart) {
+            await api().put("/products/removeQuantity", cart);
         },
-        async restoreProduct(slug) {
-            try {
-                await api().patch(`/products/${slug}`);
-            } catch (error) {
-                return { message: error.message };
-            }
+        async register({commit}, newUser) {
+            let res = await api().post("/users/signup", newUser);
+            return { message: res.data.message}
         },
-        async updateProduct(newProduct) {
-            try {
-                await api().put(`/products/${newProduct.slug}`, newProduct);
-            } catch (error) {
-                return { message: error.message };
-            }
+        async loadUserById({ commit }, userId) {
+            let res = await api().get(`/users/${userId}`);
+            commit('SET_USER_INFO', res.data);
+        },
+        async updateUser({commit}, {userId, newUser}) {
+            let res = await api().patch(`/users/${userId}`, newUser);
+            return { message: res.data.success}
+        },
+        async updateUserAddress({commit}, {email, name, phoneNumber, newAddress, id}) {
+            let res = await api().patch(`/users/edit/billing-address`, {email ,name, phoneNumber, newAddress, id});
+            return { message: res.data.success}
         },
     },
     modules: {},
