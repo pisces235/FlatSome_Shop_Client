@@ -3,6 +3,9 @@
         <div v-if="user.orders.length > 0">
             <table v-for="(o, i) in user.orders" :key="i">
                 <tr>
+                    <th colspan="4" class="text-center">Order #{{ i + 1 }}</th>
+                </tr>
+                <tr>
                     <th>PRODUCT</th>
                     <th class="text-center">PRICE</th>
                     <th class="text-center">QUANTITY</th>
@@ -96,7 +99,7 @@
             </table>
         </div>
         <div v-else>
-            <a href="/shop">BROWSE PRODUCTS</a>
+            <a href="/shop" class="a">BROWSE PRODUCTS</a>
             <p>No order has been made yet.</p>
         </div>
     </div>
@@ -129,7 +132,7 @@ export default {
             float: left;
             margin-left: 15px;
         }
-        a {
+        .a {
             background-color: #446084;
             color: #fff;
             padding: 10px 20px;
@@ -137,7 +140,7 @@ export default {
             font-weight: 600;
             float: left;
         }
-        a:hover {
+        .a:hover {
             background-color: #3d5779;
             color: #fff;
         }
