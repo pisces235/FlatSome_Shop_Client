@@ -153,8 +153,8 @@ export default new Vuex.Store({
         },
         FB_Parse() {
             setTimeout(() => {
-                window.FB.XFML.parse()
-            }, 0)
+                window.FB.XFBML.parse();
+            }, 0);
         },
         async loadUsers({ commit }) {
             let response = await api().get("/users");
