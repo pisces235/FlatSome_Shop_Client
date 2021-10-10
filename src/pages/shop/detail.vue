@@ -282,9 +282,9 @@ export default {
             pagination: false,
             cover: true,
         };
+        this.$store.dispatch("FB_Parse");
     },
     async mounted() {
-        window.FB.XFBML.parse();
         await this.$store.dispatch(
             "loadProductBySlug",
             this.$route.params.slug
