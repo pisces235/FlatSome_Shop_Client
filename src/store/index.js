@@ -151,6 +151,11 @@ export default new Vuex.Store({
         addToCart({ commit }, { product, quantity }) {
             commit("ADD_TO_CART", { product, quantity });
         },
+        FB_Parse() {
+            setTimeout(() => {
+                window.FB.XFML.parse()
+            }, 0)
+        },
         async loadUsers({ commit }) {
             let response = await api().get("/users");
             commit("SET_USERS", response.data);
