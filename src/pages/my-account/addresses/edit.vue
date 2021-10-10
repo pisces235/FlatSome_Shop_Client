@@ -59,6 +59,7 @@
             placeholder="Enter your phone number"
             type="text"
             v-model="user.phoneNumber"
+            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
         ></v-text-field>
         <button @click="updateUser()">SAVE CHANGE</button>
         <div class="errors" v-for="e in errors" :key="e">

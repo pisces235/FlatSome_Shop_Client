@@ -53,6 +53,7 @@
             placeholder="Enter your phone number"
             type="text"
             v-model="user.phoneNumber"
+            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
         ></v-text-field>
         <button @click="updateUser()">ADD ADDRESS</button>
         <div class="errors" v-for="e in errors" :key="e">
@@ -95,7 +96,6 @@ export default {
             province: "",
             district: "",
             ward: "",
-            left_address: "",
             left_address: "",
         };
     },

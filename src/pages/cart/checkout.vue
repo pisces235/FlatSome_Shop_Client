@@ -64,6 +64,7 @@
                 placeholder="Enter your phone number"
                 type="text"
                 v-model="phone"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
             ></v-text-field>
 
             <v-textarea
@@ -127,6 +128,7 @@
                 placeholder="Enter your phone number"
                 type="text"
                 v-model="user.phoneNumber"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
             ></v-text-field>
 
             <v-textarea
@@ -346,7 +348,6 @@ export default {
                 .catch((errors) => {
                     this.message = errors;
                 });
-            this.$store.dispatch("removeQuantity", this.cart);
         },
         addErrors() {
             this.errors = [];

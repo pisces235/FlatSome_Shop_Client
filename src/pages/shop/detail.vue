@@ -25,10 +25,33 @@
         <div class="contain-info">
             <p class="name">{{ product.name }}</p>
             <hr />
-            <p class="price" v-if="product.price % 1 == 0">
-                <sup>$</sup>{{ product.price }}.00
+            <p class="price" v-if="product.sale != ''">
+                <strike
+                    ><sup>$</sup
+                    >{{
+                        product.price
+                            .toFixed(2)
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }}</strike
+                >
+                &nbsp; <sup>$</sup
+                >{{
+                    (product.price - (product.price * product.sale) / 100)
+                        .toFixed(2)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }}
             </p>
-            <p class="price" v-else><sup>$</sup>{{ product.price }}0</p>
+            <p class="price" v-else>
+                <sup>$</sup
+                >{{
+                    product.price
+                        .toFixed(2)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }}
+            </p>
             <p class="description" v-html="product.description"></p>
             <div class="contain-cart">
                 <button class="minus-btn" @click="removequantity">-</button>
@@ -127,7 +150,7 @@
                             <button
                                 class="add-cart-btn"
                                 v-else
-                                @click.prevent="additemToCart(p)"
+                                @click.prevent="addItemToCart(p)"
                             >
                                 Add to cart
                             </button>
@@ -138,7 +161,28 @@
                                     {{ p.categories[0] }}
                                 </p>
                                 <p class="name-box">{{ p.name }}</p>
-                                <p class="price-box">
+                                <p class="price-box" v-if="p.sale != 0">
+                                    <strike>
+                                        ${{
+                                            p.price
+                                                .toFixed(2)
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ","
+                                                )
+                                        }} </strike
+                                    >&nbsp; ${{
+                                        (p.price - (p.price * p.sale) / 100)
+                                            .toFixed(2)
+                                            .toString()
+                                            .replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )
+                                    }}
+                                </p>
+                                <p class="price-box" v-else>
                                     ${{
                                         p.price
                                             .toFixed(2)
@@ -182,7 +226,28 @@
                                     {{ p.categories[0] }}
                                 </p>
                                 <p class="name-box">{{ p.name }}</p>
-                                <p class="price-box">
+                                <p class="price-box" v-if="p.sale != 0">
+                                    <strike>
+                                        ${{
+                                            p.price
+                                                .toFixed(2)
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ","
+                                                )
+                                        }} </strike
+                                    >&nbsp; ${{
+                                        (p.price - (p.price * p.sale) / 100)
+                                            .toFixed(2)
+                                            .toString()
+                                            .replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )
+                                    }}
+                                </p>
+                                <p class="price-box" v-else>
                                     ${{
                                         p.price
                                             .toFixed(2)
@@ -267,16 +332,40 @@ export default {
             this.showReview = true;
         },
         addToCart() {
-            this.$store.dispatch("addToCart", {
-                product: this.product,
-                quantity: this.quantity,
-            });
+            if (this.product.sale != 0) {
+                this.$store.dispatch("addToCart", {
+                    product: {
+                        ...this.product,
+                        price:
+                            this.product.price -
+                            (this.product.price * this.product.sale) / 100,
+                    },
+                    quantity: this.quantity,
+                });
+            } else {
+                this.$store.dispatch("addToCart", {
+                    product: this.product,
+                    quantity: this.quantity,
+                });
+            }
         },
         addItemToCart(product) {
-            this.$store.dispatch("addToCart", {
-                product: product,
-                quantity: 1,
-            });
+            if (product.sale != 0) {
+                this.$store.dispatch("addToCart", {
+                    product: {
+                        ...product,
+                        price:
+                            product.price -
+                            (product.price * product.sale) / 100,
+                    },
+                    quantity: 1,
+                });
+            } else {
+                this.$store.dispatch("addToCart", {
+                    product: product,
+                    quantity: 1,
+                });
+            }
         },
     },
 };
@@ -295,6 +384,11 @@ input[type="number"] {
 }
 .border_top_li {
     border-top: 3px solid #446084 !important;
+}
+
+strike {
+    text-decoration: line-through !important;
+    color: #ccc;
 }
 .contain-detail {
     position: relative;

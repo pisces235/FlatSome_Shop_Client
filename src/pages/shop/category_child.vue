@@ -48,7 +48,25 @@
                                 {{ p.categories[0] }}
                             </p>
                             <p class="name-box">{{ p.name }}</p>
-                            <p class="price-box">
+                            <p class="price-box" v-if="p.sale != 0">
+                                <strike>
+                                    ${{
+                                        p.price
+                                            .toFixed(2)
+                                            .toString()
+                                            .replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )
+                                    }} </strike
+                                >&nbsp; ${{
+                                    (p.price - (p.price * p.sale) / 100)
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
+                            <p class="price-box" v-else>
                                 ${{
                                     p.price
                                         .toFixed(2)
@@ -100,7 +118,25 @@
                                 {{ p.categories[0] }}
                             </p>
                             <p class="name-box">{{ p.name }}</p>
-                            <p class="price-box">
+                            <p class="price-box" v-if="p.sale != 0">
+                                <strike>
+                                    ${{
+                                        p.price
+                                            .toFixed(2)
+                                            .toString()
+                                            .replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )
+                                    }} </strike
+                                >&nbsp; ${{
+                                    (p.price - (p.price * p.sale) / 100)
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
+                            <p class="price-box" v-else>
                                 ${{
                                     p.price
                                         .toFixed(2)
@@ -156,16 +192,32 @@ export default {
             return newProducts;
         },
         addToCart(product) {
-            this.$store.dispatch("addToCart", {
-                product: product,
-                quantity: 1,
-            });
+            if (product.sale != 0) {
+                this.$store.dispatch("addToCart", {
+                    product: {
+                        ...product,
+                        price:
+                            product.price -
+                            (product.price * product.sale) / 100,
+                    },
+                    quantity: 1,
+                });
+            } else {
+                this.$store.dispatch("addToCart", {
+                    product: product,
+                    quantity: 1,
+                });
+            }
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
+strike {
+    text-decoration: line-through !important;
+    color: #ccc;
+}
 .contain-category {
     width: 100%;
     display: flex;
