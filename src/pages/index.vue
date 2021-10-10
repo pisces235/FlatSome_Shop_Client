@@ -272,14 +272,40 @@
                                             {{ p.categories[0] }}
                                         </p>
                                         <p class="name-box">{{ p.name }}</p>
-                                        <p
-                                            class="price-box"
-                                            v-if="p.price % 1 == 0"
-                                        >
-                                            ${{ p.price }}.00
+                                        <p class="price-box" v-if="p.sale != 0">
+                                            <strike>
+                                                ${{
+                                                    p.price
+                                                        .toFixed(2)
+                                                        .toString()
+                                                        .replace(
+                                                            /\B(?=(\d{3})+(?!\d))/g,
+                                                            ","
+                                                        )
+                                                }} </strike
+                                            >&nbsp; ${{
+                                                (
+                                                    p.price -
+                                                    (p.price * p.sale) / 100
+                                                )
+                                                    .toFixed(2)
+                                                    .toString()
+                                                    .replace(
+                                                        /\B(?=(\d{3})+(?!\d))/g,
+                                                        ","
+                                                    )
+                                            }}
                                         </p>
                                         <p class="price-box" v-else>
-                                            ${{ p.price }}0
+                                            ${{
+                                                p.price
+                                                    .toFixed(2)
+                                                    .toString()
+                                                    .replace(
+                                                        /\B(?=(\d{3})+(?!\d))/g,
+                                                        ","
+                                                    )
+                                            }}
                                         </p>
                                     </div>
                                 </div>
@@ -328,14 +354,40 @@
                                             {{ p.categories[0] }}
                                         </p>
                                         <p class="name-box">{{ p.name }}</p>
-                                        <p
-                                            class="price-box"
-                                            v-if="p.price % 1 == 0"
-                                        >
-                                            ${{ p.price }}.00
+                                        <p class="price-box" v-if="p.sale != 0">
+                                            <strike>
+                                                ${{
+                                                    p.price
+                                                        .toFixed(2)
+                                                        .toString()
+                                                        .replace(
+                                                            /\B(?=(\d{3})+(?!\d))/g,
+                                                            ","
+                                                        )
+                                                }} </strike
+                                            >&nbsp; ${{
+                                                (
+                                                    p.price -
+                                                    (p.price * p.sale) / 100
+                                                )
+                                                    .toFixed(2)
+                                                    .toString()
+                                                    .replace(
+                                                        /\B(?=(\d{3})+(?!\d))/g,
+                                                        ","
+                                                    )
+                                            }}
                                         </p>
                                         <p class="price-box" v-else>
-                                            ${{ p.price }}0
+                                            ${{
+                                                p.price
+                                                    .toFixed(2)
+                                                    .toString()
+                                                    .replace(
+                                                        /\B(?=(\d{3})+(?!\d))/g,
+                                                        ","
+                                                    )
+                                            }}
                                         </p>
                                     </div>
                                 </div>
