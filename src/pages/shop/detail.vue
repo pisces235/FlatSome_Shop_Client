@@ -113,7 +113,7 @@
             <div class="review" v-show="showReview">
                 <div
                     class="fb-comments"
-                    data-href="https://flatsome-shop.netlify.app"
+                    :data-href="link"
                     data-width=""
                     data-numposts="10"
                 ></div>
@@ -284,6 +284,7 @@ export default {
         };
     },
     async mounted() {
+        window.FB.XFBML.parse();
         await this.$store.dispatch(
             "loadProductBySlug",
             this.$route.params.slug
