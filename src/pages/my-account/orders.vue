@@ -4,7 +4,7 @@
             <table v-for="(o, i) in user.orders" :key="i">
                 <tr>
                     <th colspan="4" class="text-center border-0">
-                        <h3>Order #{{ i + 1 }}</h3>
+                        <h3>Order #{{ i + 1 }} Created Date: {{o.createdDate}}</h3>
                     </th>
                 </tr>
                 <tr>
@@ -95,7 +95,7 @@
                     <td class="text-center subToTal">PAID</td>
                     <td class="text-center">
                         <p v-if="o.payment == true" class="green text-center">
-                            You was paid this order!
+                            You was paid this order in {{o.paymentDate}}
                         </p>
                         <p v-else class="red text-center">
                             You have not pay yet!
