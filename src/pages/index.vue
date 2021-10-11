@@ -506,7 +506,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .container-fluid {
     .banner {
         width: 100%;
@@ -766,6 +766,12 @@ export default {
                 }
                 .column a span {
                     bottom: 120px;
+                }
+            }
+            .information {
+                .contain-info {
+                    width: 100%;
+                    float: left;
                 }
             }
         }

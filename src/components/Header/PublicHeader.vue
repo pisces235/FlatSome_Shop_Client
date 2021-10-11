@@ -6,6 +6,78 @@
                 <i class="fa fa-bars"></i>
             </label>
 
+            <div class="hide">
+                <v-icon class="icon-search">mdi-magnify</v-icon>
+                <div class="contain-search">
+                    <div class="contain-input">
+                        <input
+                            type="text"
+                            name=""
+                            id="search-input"
+                            v-model="search"
+                            @change="getSearchItems()"
+                        />
+                        <button @click="getSearchItems()">
+                            <v-icon>mdi-magnify</v-icon>
+                        </button>
+                    </div>
+
+                    <div
+                        class="contain-item"
+                        v-for="p in searchItems"
+                        :key="p._id"
+                    >
+                        <a
+                            :href="
+                                '/shop/' +
+                                p.categories[0].toLowerCase() +
+                                '/' +
+                                p.categories[1].toLowerCase() +
+                                '/' +
+                                p.slug
+                            "
+                            v-if="p.categories.length > 1"
+                        >
+                            <img :src="p.gallery[0]" alt="" />
+                            <div class="name">
+                                <span>{{ p.name }}</span>
+                            </div>
+                            <p class="price">
+                                ${{
+                                    p.price
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
+                        </a>
+
+                        <a
+                            :href="
+                                '/shop/' +
+                                p.categories[0].toLowerCase() +
+                                '/' +
+                                p.slug
+                            "
+                            v-else
+                        >
+                            <img :src="p.gallery[0]" alt="" />
+                            <div class="name">
+                                <span>{{ p.name }}</span>
+                            </div>
+                            <p class="price">
+                                ${{
+                                    p.price
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <div class="navbar-logo">
                 <a href="/"
                     ><img src="../../assets/images/logo.png" alt=""
@@ -207,15 +279,30 @@
                         <a href="/" class="nav__mobile-link">BLOG</a>
                     </li>
                     <li v-if="isLoggedIn == true">
-                        <div
-                            class="nav__mobile-link"
-                            @click.prevent="logoutUser"
-                        >
-                            MY ACCOUNT
-                        </div>
+                        <a href="/my-account" class="nav__mobile-link show-dropdown">MY ACCOUNT</a>
+                        <nav class="dropdown">
+                            <ul>
+                                <li>
+                                    <a href="/my-account/orders" class="nav__mobile-link">Orders</a>
+                                </li>
+                                <li>
+                                    <a href="/my-account/addresses" class="nav__mobile-link"
+                                        >Addresses</a
+                                    >
+                                </li>
+                                <li>
+                                    <a href="/my-account/account-details" class="nav__mobile-link"
+                                        >Account details</a
+                                    >
+                                </li>
+                                <li>
+                                    <div @click="logoutUser" class="nav__mobile-link">Logout</div>
+                                </li>
+                            </ul>
+                        </nav>
                     </li>
                     <li v-else>
-                        <a href="/account" class="nav__mobile-link">LOGIN</a>
+                        <a href="/account" class="nav__mobile-link">LOGIN </a>
                     </li>
                 </ul>
             </div>
@@ -307,7 +394,9 @@ header {
         font-size: 14px;
         color: #777777;
         font-weight: 700;
-
+        .hide {
+            display: none;
+        }
         .nav-account {
             line-height: 90px;
             float: right;
@@ -590,6 +679,12 @@ header {
                 height: 54px;
                 li {
                     line-height: 54px;
+                    .dropdown {
+                        display:none;
+                    }
+                    .show-dropdown:hover ~ .dropdown, .dropdown:hover {
+                        display: block;
+                    }
                 }
             }
 
@@ -599,6 +694,7 @@ header {
                 display: block;
                 padding-left: 24px;
                 border-top: 1px solid #f5f5f5;
+                cursor: pointer;
             }
             .nav__mobile-link:last-child {
                 border-bottom: 1px solid #f5f5f5;
@@ -623,11 +719,98 @@ header {
 
 @media (max-width: 1024px) {
     header {
+        max-width: 100vw !important;
         .nav {
             width: 100%;
             margin: 0;
             display: flex;
             justify-content: space-between;
+            .hide {
+                display: block;
+                line-height: 90px;
+                width: 20px;
+                margin: 0;
+                padding: 0;
+                .icon-search {
+                    cursor: pointer;
+                    display: block;
+                    line-height: 90px;
+                }
+                .contain-search {
+                    display: none;
+                    position: absolute;
+                    background-color: white;
+                    top: 67px;
+                    left: 30px;
+                    max-width: 400px;
+                    box-shadow: 2px 2px 2px 2px #888888;
+                    padding: 20px;
+                    overflow-y: auto;
+                    z-index: 5;
+                    .contain-input {
+                        margin-bottom: 15px;
+                        #search-input {
+                            height: 35px;
+                            width: calc(100% - 35px);
+                            float: left;
+                            outline: none;
+                            border: solid 1px #ccc;
+                            font-weight: 400;
+                            font-size: 16px;
+                        }
+                        button {
+                            width: 35px;
+                            height: 35px;
+                            background-color: #d26e4b;
+                            display: block;
+                            padding: 15px;
+                            position: relative;
+                            float: left;
+                            i {
+                                color: white;
+                                position: absolute;
+                                top: 7px;
+                                left: 7px;
+                            }
+                        }
+                        button:hover {
+                            background-color: #a95a3d;
+                        }
+                    }
+
+                    .contain-item {
+                        width: 100%;
+                        border-bottom: 1px solid #ccc;
+                        float: left;
+                        a {
+                            color: #777;
+                            img {
+                                width: 50px;
+                                height: 50px;
+                                border-radius: 50%;
+                                float: left;
+                                margin: 10px 0 10px 0;
+                            }
+                            .name {
+                                float: left;
+                                line-height: 50px;
+                                margin: 10px 0 10px 10px;
+                            }
+                            .price {
+                                float: right;
+                                max-width: 60px;
+                                line-height: 50px;
+                                margin: 10px 0 10px 0;
+                                text-align: right;
+                            }
+                        }
+                    }
+                }
+                .icon-search:hover ~ .contain-search,
+                .contain-search:hover {
+                    display: block;
+                }
+            }
             .nav__pc {
                 display: none;
             }
@@ -635,6 +818,9 @@ header {
                 margin-right: 2%;
                 span {
                     display: none;
+                }
+                .contain_small_cart {
+                    right: 2.5%;
                 }
             }
             .navbar_btn {

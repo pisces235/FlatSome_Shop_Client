@@ -257,13 +257,13 @@ export default {
         justify-content: flex-start;
         flex-wrap: wrap;
         .contain-box {
-            width: 250px;
-            margin: 0 0 5% 5%;
+            width: 30%;
+            margin: 0 0 5% 3.3%;
             padding: 0;
             .box {
                 .slide-img {
                     height: 300px;
-                    width: 250px;
+                    width: 100%;
                     position: relative;
                     img {
                         width: 100%;
@@ -346,6 +346,57 @@ export default {
                 display: block;
                 background-color: #446084;
                 color: white;
+            }
+        }
+    }
+}
+@media (max-width: 1068px) {
+    .container {
+        min-width: 100%;
+        margin: 0;
+        .link-page {
+            margin: 0;
+            font-size: 14px;
+            margin: 25px 2.5%;
+        }
+        .shop-left {
+            padding: 0 0 0 2.5%;
+        }
+        .shop-right {
+            .contain-box {
+                margin: 0 1.65% 5% 1.65%;
+                .box {
+                    .slide-img {
+                        height: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+@media (max-width: 834px) {
+    .container {
+        .shop-left {
+            width: 90%;
+            .shop-left {
+                margin: 0 2.5%;
+                padding: 0;
+            }
+        }
+        .shop-right {
+            float: left;
+            width: 100%;
+        }
+    }
+}
+@media (max-width: 540px) {
+    .container {
+        .shop-right {
+            float: left;
+            width: 100%;
+            .contain-box {
+                margin: 0 2.5% 5% 2.5%;
+                width: 45%;
             }
         }
     }

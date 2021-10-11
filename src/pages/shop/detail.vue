@@ -111,12 +111,7 @@
                 v-show="showDescription"
             ></div>
             <div class="review" v-show="showReview">
-                <div
-                    class="fb-comments"
-                    :data-href="link"
-                    data-width=""
-                    data-numposts="10"
-                ></div>
+                <div class="title">Reviews</div>
             </div>
         </div>
         <div class="contain-related">
@@ -282,7 +277,6 @@ export default {
             pagination: false,
             cover: true,
         };
-        this.$store.dispatch("FB_Parse");
     },
     async mounted() {
         await this.$store.dispatch(
@@ -372,7 +366,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -611,6 +605,16 @@ strike {
                 background-color: #446084;
                 color: white;
             }
+        }
+    }
+}
+@media (max-width: 834px) {
+    .contain-detail {
+        min-width: 100%;
+        left: 0;
+        .contain-gallery, .contain-info, .description, .contain-related {
+            min-width: 95%;
+            margin: 0 2.5%;
         }
     }
 }

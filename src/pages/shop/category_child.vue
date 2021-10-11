@@ -224,13 +224,13 @@ strike {
     justify-content: flex-start;
     flex-wrap: wrap;
     .splide__slide {
-        width: 250px;
-        margin: 0 0 5% 5%;
+        width: 30%;
+        margin: 0 0 5% 3.3%;
         padding: 0;
         .box {
             .slide-img {
-                height: 300px;
-                width: 250px;
+                height: 100%;
+                width: 100%;
                 position: relative;
                 img {
                     width: 100%;
@@ -255,7 +255,6 @@ strike {
                     width: 100%;
                     height: 0;
                     transition: visibility 0.3s, height 0.3s;
-                    z-index: 1;
                 }
                 .category-btn {
                     background-color: white;
@@ -314,6 +313,35 @@ strike {
             display: block;
             background-color: #446084;
             color: white;
+        }
+    }
+}
+
+@media (max-width: 1068px) {
+    .contain-category {
+        .splide__slide {
+            margin: 0 1.65% 5% 1.65%;
+            .box {
+                .slide-img {
+                    height: 100%;
+                }
+            }
+        }
+    }
+}
+@media (max-width: 834px) {
+    .contain-category {
+        float: left;
+        width: 100%;
+    }
+}
+@media (max-width: 540px) {
+    .contain-category {
+        float: left;
+        width: 100%;
+        .splide__slide {
+            margin: 0 2.5% 5% 2.5%;
+            width: 45%;
         }
     }
 }

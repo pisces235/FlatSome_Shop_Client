@@ -254,6 +254,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
 .container {
     width: 72%;
     margin: 0 14%;
@@ -264,6 +274,8 @@ export default {
     }
     .contain-cart {
         margin-top: 55px;
+
+        margin-bottom: 30px;
         .cart_left {
             width: 62.5%;
             padding-right: 30px;
@@ -457,6 +469,69 @@ export default {
         color: white;
         background-color: #446084;
         padding: 13px 20px;
+    }
+}
+@media (max-width: 1090px) {
+    .container {
+        margin: 0;
+        hr {
+            width: 100vw;
+        }
+        .contain-cart {
+            width: 97.5vw;
+            .cart_left,
+            .cart_right {
+                width: 95%;
+                margin: 20px 2.5%;
+                border: none;
+                padding: 0;
+            }
+        }
+    }
+}
+@media (max-width: 468px) {
+    .container {
+        .contain-cart {
+            .cart_left {
+                table {
+                    tr {
+                        .item_info {
+                            img {
+                                width: 70px;
+                                height: 80px;
+                                float: left;
+                            }
+                            p {
+                                margin: 5px 0 15px 15px;
+                                line-height: 20px;
+                                .stockMs {
+                                    width: 90px;
+                                    display: block;
+                                    top: 35px;
+                                }
+                            }
+                            .remove-btn {
+                                float: left;
+                                position: absolute;
+                                left: 2.5%;
+                                line-height: 20px;
+                            }
+                        }
+                        .contain_qty {
+                            .minus-btn,
+                            .plus-btn {
+                                width: 18px;
+                                height: 30px;
+                            }
+                            .quantity {
+                                width: 30px;
+                                height: 30px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 </style>

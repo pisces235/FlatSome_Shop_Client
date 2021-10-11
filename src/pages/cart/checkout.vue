@@ -487,4 +487,18 @@ export default {
         }
     }
 }
+@media (max-width: 1024px) {
+    .container {
+        min-width: 95%;
+        margin: 0 2.5%;
+    }
+}
+@media (max-width: 734px) {
+    .container {
+        .contain-left, .contain-right {
+            width: 100%;
+            margin: 20px 0;
+        }
+    }
+}
 </style>

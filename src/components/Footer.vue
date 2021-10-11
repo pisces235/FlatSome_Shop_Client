@@ -172,6 +172,8 @@
 }
 @media (max-width: 1024px) {
     .container {
+        width: 100%;
+        margin: 0;
         .block {
             width: 100%;
             margin: 15px 0 15px 0;

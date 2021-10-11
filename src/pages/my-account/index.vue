@@ -191,4 +191,24 @@ export default {
         }
     }
 }
+@media (max-width: 1068px) {
+    .container-fluid {
+        .container {
+            min-width: 95%;
+            margin: 0 2.5%;
+            .contain-left,
+            .contain-right {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .contain-left {
+                border-right: none;
+                .left-bar {
+                    ul {
+                    }
+                }
+            }
+        }
+    }
+}
 </style>

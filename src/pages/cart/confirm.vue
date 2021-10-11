@@ -24,7 +24,7 @@ export default {};
 <style lang="scss" scoped>
 .container {
     width: 73%;
-    margin: 0 13.5%;
+    margin: 20px 13.5%;
     padding: 0;
     hr {
         margin: 0;
