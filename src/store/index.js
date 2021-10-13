@@ -44,7 +44,6 @@ export default new Vuex.Store({
             }
         },
         SET_CATEGORIES(state) {
-            let count = 0;
             let categories = [];
             for (var i = 0; i < state.products.length; i++) {
                 if (categories.length > 0) {
@@ -62,16 +61,17 @@ export default new Vuex.Store({
                         }
                     }
 
+                    let count = categories.length;
                     for (var k = 0; k < categories.length; k++) {
                         if (
                             categories[k].title !=
                             state.products[i].categories[0]
                         ) {
-                            count++;
+                            count--;
                         }
                     }
 
-                    if (count == categories.length) {
+                    if (count == 0) {
                         categories.push({
                             title: state.products[i].categories[0],
                             image: state.products[i].gallery[0],
@@ -125,8 +125,8 @@ export default new Vuex.Store({
             let newArray = [];
             for (var i = 0; i < state.products.length; i++) {
                 if (
-                    product.categories[0] == state.products[i].categories[0] &&
-                    product.name != state.products[i].name
+                    product.categories[0].toLowerCase() == state.products[i].categories[0].toLowerCase() &&
+                    product.slug != state.products[i].slug
                 ) {
                     newArray.push(state.products[i]);
                 }

@@ -4,7 +4,7 @@
         <nav class="link-page">
             <ul>
                 <li v-for="(i, index) in items" :key="index">
-                    <a v-if="index != items.length - 1" :href="i.href">{{
+                    <a v-if="index != items.length - 1" :href="i.href.toLowerCase()">{{
                         i.text
                     }}</a>
                     <span v-if="(index > 0) & (index < items.length)">/</span>

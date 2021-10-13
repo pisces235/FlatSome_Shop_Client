@@ -416,10 +416,10 @@
                 </div>
                 <splide :options="options" :slides="categories">
                     <splide-slide v-for="c in categories" :key="c.title">
-                        <a :href="'/' + c.title" class="box">
+                        <a :href="'/product-category/' + c.title.toLowerCase()" class="box">
                             <div class="slide-img">
                                 <img :src="c.image" />
-                                <a href="/" class="category-btn">
+                                <a href="'/product-category/' + c.title.toLowerCase()" class="category-btn">
                                     <p>{{ c.title }}</p>
                                     <p v-if="c.qty > 1">{{ c.qty }} PRODUCTS</p>
                                     <p v-else>{{ c.qty }} PRODUCT</p>

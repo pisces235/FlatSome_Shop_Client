@@ -356,7 +356,6 @@ export default {
         this.link = window.location.href;
         this.options = {
             perMove: 4,
-            type: "loop",
             rewind: true,
             autoWidth: true,
             gap: "1rem",
