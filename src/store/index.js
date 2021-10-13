@@ -151,6 +151,14 @@ export default new Vuex.Store({
         addToCart({ commit }, { product, quantity }) {
             commit("ADD_TO_CART", { product, quantity });
         },
+        async addReview({ commit }, { slug, newReview }) {
+            try {
+                await api().patch(`/products/${slug}/addReview`, newReview);
+                return { message: "success" };
+            } catch (error) {
+                return { message: error.message };
+            }
+        },
         async loadUsers({ commit }) {
             let response = await api().get("/users");
             commit("SET_USERS", response.data);

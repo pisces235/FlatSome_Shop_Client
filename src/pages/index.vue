@@ -58,8 +58,11 @@
                                         p.slug
                                     "
                                     ><img :src="p.gallery[0]" />
-                                    <img :src="p.gallery[1]" class="img-back"
-                                /></a>
+                                    <img :src="p.gallery[1]" class="img-back" />
+                                    <div class="sale" v-show="p.sale > 0">
+                                        Sale!
+                                    </div>
+                                </a>
 
                                 <button
                                     class="add-cart-btn"
@@ -143,8 +146,11 @@
                                     "
                                 >
                                     <img :src="p.gallery[0]" />
-                                    <img :src="p.gallery[1]" class="img-back"
-                                /></a>
+                                    <img :src="p.gallery[1]" class="img-back" />
+                                    <div class="sale" v-show="p.sale > 0">
+                                        Sale!
+                                    </div>
+                                </a>
                                 <button
                                     class="add-cart-btn"
                                     v-if="p.stock == 0"
@@ -237,8 +243,11 @@
                                         p.slug
                                     "
                                     ><img :src="p.gallery[0]" />
-                                    <img :src="p.gallery[1]" class="img-back"
-                                /></a>
+                                    <img :src="p.gallery[1]" class="img-back" />
+                                    <div class="sale" v-show="p.sale > 0">
+                                        Sale!
+                                    </div>
+                                </a>
 
                                 <button
                                     class="add-cart-btn"
@@ -322,8 +331,11 @@
                                     "
                                 >
                                     <img :src="p.gallery[0]" />
-                                    <img :src="p.gallery[1]" class="img-back"
-                                /></a>
+                                    <img :src="p.gallery[1]" class="img-back" />
+                                    <div class="sale" v-show="p.sale > 0">
+                                        Sale!
+                                    </div>
+                                </a>
                                 <button
                                     class="add-cart-btn"
                                     v-if="p.stock == 0"
@@ -460,7 +472,7 @@ export default {
     created() {
         this.options = {
             type: "loop",
-            perMove: 1,
+            perMove: 4,
             rewind: true,
             autoWidth: true,
             gap: "1rem",
@@ -655,6 +667,18 @@ export default {
                             font-size: 10px;
                             font-weight: 400;
                         }
+                    }
+                    .sale {
+                        background-color: #d26e4b;
+                        border-radius: 50%;
+                        position: absolute;
+                        text-align: center;
+                        padding: 10px 4px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: white;
+                        top: 30px;
+                        left: -5px;
                     }
                 }
                 .detail-box {

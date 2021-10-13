@@ -2,7 +2,7 @@
     <div class="contain-detail">
         <div class="contain-gallery">
             <img :src="imageSource" id="featured" />
-
+            <div class="sale" v-show="product.sale > 0">Sale!</div>
             <div
                 class="contain-thumbs"
                 v-for="(p, index) in product.gallery"
@@ -102,7 +102,7 @@
                     v-bind:class="{ border_top_li: isActiveReview }"
                     @click="activeReview"
                 >
-                    REVIEW
+                    REVIEW ({{ product.reviews.length }})
                 </li>
             </ul>
             <div
@@ -112,6 +112,88 @@
             ></div>
             <div class="review" v-show="showReview">
                 <div class="title">Reviews</div>
+                <div class="contain-review" v-if="product.reviews.length > 0">
+                    <div class="contain-left">
+                        <div v-for="(r, index) in product.reviews" :key="index">
+                            <div
+                                class="review-info"
+                                v-show="index <= commentsToShow"
+                            >
+                                <img
+                                    src="../../assets/images/account.png"
+                                    alt=""
+                                />
+                                <div>
+                                    <v-rating
+                                        v-model="r.rating"
+                                        color="#d26e4b"
+                                        background-color="grey darken-1"
+                                        half-increments
+                                        hover
+                                        readonly
+                                        class="user_rating"
+                                    ></v-rating>
+                                    <p>{{ r.name }}</p>
+                                    <p>{{ r.review }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="show_more" @click="commentsToShow += 3">
+                            SHOW MORE REVIEWS
+                        </button>
+                    </div>
+                    <div class="contain-right">
+                        <div class="add_review">
+                            <div class="title">Add a review</div>
+                            <label class="label">Your rating *</label>
+                            <div class="rating">
+                                <v-rating
+                                    v-model="rating"
+                                    color="#d26e4b"
+                                    background-color="grey darken-1"
+                                    half-increments
+                                    hover
+                                    large
+                                ></v-rating>
+                            </div>
+                            <label class="label">Your review *</label>
+                            <textarea
+                                v-model="review"
+                                cols="30"
+                                rows="5"
+                                required
+                            ></textarea>
+                            <button @click="addReview()">SUBMIT</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="contain-review" v-else>
+                    <p class="warning-review">There are no reviews yet.</p>
+                    <div class="add_review">
+                        <div class="title">
+                            Be the first to review "{{ product.name }}"
+                        </div>
+                        <label class="label">Your rating *</label>
+                        <div class="rating">
+                            <v-rating
+                                v-model="rating"
+                                color="#d26e4b"
+                                background-color="grey darken-1"
+                                half-increments
+                                hover
+                                large
+                            ></v-rating>
+                        </div>
+                        <label class="label">Your review *</label>
+                        <textarea
+                            v-model="review"
+                            cols="30"
+                            rows="5"
+                            required
+                        ></textarea>
+                        <button @click="addReview()">SUBMIT</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="contain-related">
@@ -134,6 +216,7 @@
                         <div class="slide-img">
                             <img :src="p.gallery[0]" />
                             <img :src="p.gallery[1]" class="img-back" />
+                            <div class="sale" v-show="p.sale > 0">Sale!</div>
                             <button
                                 class="add-cart-btn"
                                 v-if="p.stock == 0"
@@ -199,6 +282,7 @@
                         <div class="slide-img">
                             <img :src="p.gallery[0]" />
                             <img :src="p.gallery[1]" class="img-back" />
+                            <div class="sale" v-show="p.sale > 0">Sale!</div>
                             <button
                                 class="add-cart-btn"
                                 v-if="p.stock == 0"
@@ -270,7 +354,8 @@ export default {
     created() {
         this.link = window.location.href;
         this.options = {
-            perMove: 1,
+            perMove: 4,
+            type: "loop",
             rewind: true,
             autoWidth: true,
             gap: "1rem",
@@ -302,6 +387,9 @@ export default {
             isActiveReview: false,
             showDescription: true,
             showReview: false,
+            rating: 5,
+            review: "",
+            commentsToShow: 3,
         };
     },
     methods: {
@@ -362,6 +450,20 @@ export default {
                 });
             }
         },
+        addReview() {
+            let user = JSON.parse(window.localStorage.currentUser);
+            let newReview = {
+                rating: this.rating,
+                review: this.review,
+                name: user.name,
+                UserID: user.id,
+            };
+            this.$store.dispatch("addReview", {
+                slug: this.product.slug,
+                newReview: newReview,
+            });
+            this.$router.go();
+        },
     },
 };
 </script>
@@ -392,7 +494,19 @@ strike {
     display: block;
     .contain-gallery {
         max-width: 510px;
-
+        .sale {
+            background-color: #d26e4b;
+            border-radius: 50%;
+            position: absolute;
+            text-align: center;
+            padding: 16px 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            top: 30px;
+            left: -5px;
+            cursor: pointer;
+        }
         float: left;
         #featured {
             width: 100%;
@@ -500,9 +614,105 @@ strike {
         }
         .review {
             width: 100%;
-            // .fb-comments {
-            //     width: 100%;
-            // }
+            float: left;
+            margin: 30px 0;
+            .title {
+                font-size: 20px;
+                font-weight: bold;
+            }
+            .contain-review {
+                .contain-left {
+                    width: 55%;
+                    float: left;
+                    .review-info {
+                        border-bottom: solid 2px #ccc;
+                        display: block;
+                        width: 100%;
+                        float: left;
+                        margin: 20px 0;
+                        img {
+                            width: 20%;
+                            height: auto;
+                            float: left;
+                        }
+                        div {
+                            width: 80%;
+                            float: left;
+                            padding-right: 15px;
+                            p {
+                                width: 100%;
+                                float: left;
+                                word-wrap: break-word;
+                            }
+                            .user_rating {
+                                width: 100%;
+                                float: left;
+                            }
+                        }
+                    }
+                    .show_more {
+                        width: 40%;
+                        margin: 0 30%;
+                        background-color: #446084;
+                        padding: 8px 12px;
+                        color: white;
+                        font-weight: bold;
+                    }
+                    .show_more:hover {
+                        background-color: #37436c;
+                    }
+                }
+                .contain-right {
+                    width: 45%;
+                    float: left;
+                }
+                .warning-review {
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: #777;
+                }
+                .add_review {
+                    width: 100%;
+                    border: 2px solid #446084;
+                    padding: 25px;
+                    .title,
+                    label,
+                    .rating,
+                    textarea {
+                        width: 100%;
+                        float: left;
+                    }
+                    .title {
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
+                    label {
+                        font-size: 16px;
+                        font-weight: bold;
+                        margin-top: 15px;
+                    }
+                    .rating {
+                        margin-top: 10px;
+                    }
+                    textarea {
+                        box-shadow: 1px 1px 1px 1px #888888;
+                        outline: none;
+                        padding: 10px;
+                        margin: 3px 0 15px 0;
+                    }
+                    button {
+                        background-color: #446084;
+                        color: white;
+                        display: block;
+                        padding: 10px 20px;
+                        margin-bottom: 20px;
+                        font-weight: bold;
+                    }
+                    button:hover {
+                        background-color: #37436c;
+                    }
+                }
+            }
         }
     }
     .contain-related {
@@ -570,6 +780,19 @@ strike {
                             font-weight: 400;
                         }
                     }
+                    .sale {
+                        background-color: #d26e4b;
+                        border-radius: 50%;
+                        position: absolute;
+                        text-align: center;
+                        padding: 10px 4px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: white;
+                        top: 30px;
+                        left: -5px;
+                        cursor: pointer;
+                    }
                 }
                 .detail-box {
                     p {
@@ -612,7 +835,10 @@ strike {
     .contain-detail {
         min-width: 100%;
         left: 0;
-        .contain-gallery, .contain-info, .description, .contain-related {
+        .contain-gallery,
+        .contain-info,
+        .description,
+        .contain-related {
             min-width: 95%;
             margin: 0 2.5%;
         }

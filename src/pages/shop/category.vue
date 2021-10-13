@@ -1,6 +1,39 @@
 <template>
     <div class="contain-category">
-        <splide-slide v-for="p in getNewProducts()" :key="p.slug">
+        <div class="contain-filter">
+            <div class="filter-price">
+                <span>${{ filter_price[0] }}</span>
+                <v-range-slider
+                    v-model="filter_price"
+                    :max="max"
+                    :min="min"
+                    class="align-center range"
+                    color="black"
+                    @change="getFilterProducts()"
+                    @click="getFilterProducts()"
+                >
+                </v-range-slider>
+                <span>${{ filter_price[1] }}</span>
+            </div>
+            <select
+                name=""
+                id="filter-type"
+                v-model="filter_type"
+                @click="getFilterProducts()"
+            >
+                {{
+                    filter_type
+                }}
+                <option value="">Default sorting</option>
+                <option value="up">Sorting by price: low to high</option>
+                <option value="down">Sorting by price: high to low</option>
+            </select>
+        </div>
+        <splide-slide
+            v-for="p in newProducts"
+            :key="p.slug"
+            v-show="newProducts.length > 0"
+        >
             <div class="box" v-if="p.categories.length > 1">
                 <div class="slide-img">
                     <a
@@ -14,7 +47,9 @@
                         "
                         ><img :src="p.gallery[0]" />
                         <img :src="p.gallery[1]" class="img-back"
-                    /></a>
+                    />
+                        <div class="sale" v-show="p.sale > 0">Sale!</div>
+                    </a>
 
                     <button
                         class="add-cart-btn"
@@ -90,7 +125,162 @@
                     >
                         <img :src="p.gallery[0]" />
                         <img :src="p.gallery[1]" class="img-back"
-                    /></a>
+                    />
+                        <div class="sale" v-show="p.sale > 0">Sale!</div>
+                    </a>
+                    <button
+                        class="add-cart-btn"
+                        v-if="p.stock == 0"
+                        disabled
+                        style="opacity: 0.5"
+                    >
+                        Out of stock
+                    </button>
+                    <button
+                        class="add-cart-btn"
+                        v-else
+                        @click.prevent="addToCart(p)"
+                    >
+                        Add to cart
+                    </button>
+                </div>
+                <a
+                    :href="
+                        '/shop/' + p.categories[0].toLowerCase() + '/' + p.slug
+                    "
+                >
+                    <div class="detail-box">
+                        <div class="type">
+                            <p class="categories-box">
+                                {{ p.categories[0] }}
+                            </p>
+                            <p class="name-box">{{ p.name }}</p>
+                            <p class="price-box" v-if="p.sale != 0">
+                                <strike>
+                                    ${{
+                                        p.price
+                                            .toFixed(2)
+                                            .toString()
+                                            .replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )
+                                    }} </strike
+                                >&nbsp; ${{
+                                    (p.price - (p.price * p.sale) / 100)
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
+                            <p class="price-box" v-else>
+                                ${{
+                                    p.price
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </splide-slide>
+        <splide-slide v-for="p in filterProducts" :key="p._id">
+            <div class="box" v-if="p.categories.length > 1">
+                <div class="slide-img">
+                    <a
+                        :href="
+                            '/shop/' +
+                            p.categories[0].toLowerCase() +
+                            '/' +
+                            p.categories[1].toLowerCase() +
+                            '/' +
+                            p.slug
+                        "
+                        ><img :src="p.gallery[0]" />
+                        <img :src="p.gallery[1]" class="img-back"
+                    />
+                        <div class="sale" v-show="p.sale > 0">Sale!</div>
+                    </a>
+
+                    <button
+                        class="add-cart-btn"
+                        v-if="p.stock == 0"
+                        disabled
+                        style="opacity: 0.5"
+                    >
+                        Out of stock
+                    </button>
+                    <button
+                        class="add-cart-btn"
+                        v-else
+                        @click.prevent="addToCart(p)"
+                    >
+                        Add to cart
+                    </button>
+                </div>
+                <a
+                    :href="
+                        '/shop/' +
+                        p.categories[0].toLowerCase() +
+                        '/' +
+                        p.categories[1].toLowerCase() +
+                        '/' +
+                        p.slug
+                    "
+                >
+                    <div class="detail-box">
+                        <div class="type">
+                            <p class="categories-box">
+                                {{ p.categories[0] }}
+                            </p>
+                            <p class="name-box">{{ p.name }}</p>
+                            <p class="price-box" v-if="p.sale != 0">
+                                <strike>
+                                    ${{
+                                        p.price
+                                            .toFixed(2)
+                                            .toString()
+                                            .replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )
+                                    }} </strike
+                                >&nbsp; ${{
+                                    (p.price - (p.price * p.sale) / 100)
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
+                            <p class="price-box" v-else>
+                                ${{
+                                    p.price
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div v-else class="box">
+                <div class="slide-img">
+                    <a
+                        :href="
+                            '/shop/' +
+                            p.categories[0].toLowerCase() +
+                            '/' +
+                            p.slug
+                        "
+                    >
+                        <img :src="p.gallery[0]" />
+                        <img :src="p.gallery[1]" class="img-back"
+                    />
+                        <div class="sale" v-show="p.sale > 0">Sale!</div>
+                    </a>
                     <button
                         class="add-cart-btn"
                         v-if="p.stock == 0"
@@ -156,28 +346,85 @@
 import { mapState } from "vuex";
 
 export default {
+    created() {},
     computed: {
         ...mapState(["products"]),
     },
     async mounted() {
         await this.$store.dispatch("loadProducts");
+        this.getNewProducts();
     },
     data() {
-        return {};
+        return {
+            filter_type: "",
+            min: 0,
+            max: 10000,
+            filter_price: [0, 10000],
+            newProducts: [],
+            filterProducts: [],
+            search: "",
+        };
     },
     methods: {
         getNewProducts() {
             let link = window.location.pathname;
             let linkArray = link.split(/[^A-Za-z0-9]/);
             let search = linkArray.pop();
-
             let newProducts = [];
             for (let i = 0; i < this.products.length; i++) {
                 if (search == this.products[i].categories[0].toLowerCase()) {
                     newProducts.push(this.products[i]);
                 }
             }
-            return newProducts;
+
+            this.filterProducts = [];
+            this.newProducts = newProducts;
+        },
+        getFilterProducts() {
+            let link = window.location.pathname;
+            let linkArray = link.split(/[^A-Za-z0-9]/);
+            let search = linkArray.pop();
+            let newProducts = [];
+            for (var i = 0; i < this.products.length; i++) {
+                if (search == this.products[i].categories[0].toLowerCase()) {
+                    if (
+                        this.products[i].price <= this.filter_price[1] &&
+                        this.products[i].price >= this.filter_price[0]
+                    ) {
+                        newProducts.push(this.products[i]);
+                    }
+                }
+            }
+
+            if (this.filter_type == "up") {
+                newProducts.sort(function (a, b) {
+                    let x = a.price;
+                    let y = b.price;
+                    if (x < y) {
+                        return -1;
+                    }
+                    if (x > y) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            }
+            if (this.filter_type == "down") {
+                newProducts.sort(function (a, b) {
+                    let x = a.price;
+                    let y = b.price;
+                    if (x < y) {
+                        return -1;
+                    }
+                    if (x > y) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                newProducts.reverse()
+            }
+            this.newProducts = [];
+            this.filterProducts = newProducts;
         },
         addToCart(product) {
             if (product.sale != 0) {
@@ -211,13 +458,45 @@ strike {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    .contain-filter {
+        position: relative;
+        top: 0;
+        width: 100%;
+        display: block;
+        margin-bottom: 20px;
+        #filter-type {
+            min-width: 220px;
+            height: 40px;
+            float: right;
+            outline: none;
+            border: solid 1px #ccc;
+            padding: 0 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: #333;
+        }
+        .filter-price {
+            width: 500px;
+            float: left;
+            span,
+            .range {
+                float: left;
+                margin-right: 10px;
+                line-height: 40px;
+            }
+            .range {
+                width: 300px;
+                margin-top: 3px;
+            }
+        }
+    }
     .splide__slide {
         width: 30%;
         margin: 0 0 5% 3.3%;
         padding: 0;
         .box {
             .slide-img {
-                height: 100%;
+                height: 300px;
                 width: 100%;
                 position: relative;
                 img {
@@ -267,6 +546,18 @@ strike {
                         font-weight: 400;
                     }
                 }
+                .sale {
+                    background-color: #d26e4b;
+                    border-radius: 50%;
+                    position: absolute;
+                    text-align:center;
+                    padding: 10px 4px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: white;
+                    top: 30px;
+                    left: -5px;
+                }
             }
             .detail-box {
                 p {
@@ -315,12 +606,66 @@ strike {
                 }
             }
         }
+        .contain-filter {
+            #filter-type {
+                width: 30%;
+                margin: 0 35%;
+            }
+            .filter-price {
+                width: 60%;
+                margin: 0 20%;
+                float: left;
+                span,
+                .range {
+                    float: left;
+                    line-height: 40px;
+                }
+                .range {
+                    width: 70%;
+                    margin-top: 3px;
+                }
+                span {
+                    width: 10%;
+                }
+            }
+        }
     }
 }
 @media (max-width: 834px) {
     .contain-category {
         float: left;
         width: 100%;
+
+        .contain-filter {
+            #filter-type {
+                width: 60%;
+                margin: 0 20%;
+            }
+            .filter-price {
+                width: 96%;
+                margin: 0 2%;
+                float: left;
+                span,
+                .range {
+                    float: left;
+                    line-height: 40px;
+                    margin: 0;
+                }
+                .range {
+                    width: 50%;
+                    margin-top: 3px;
+                }
+                span {
+                    width:calc(25% - 20px);
+                    font-size: 9px;
+                    text-align: right;
+                    padding: 0 10px;
+                }
+                span:last-child {
+                    text-align: left;
+                }
+            }
+        }
     }
 }
 @media (max-width: 540px) {
