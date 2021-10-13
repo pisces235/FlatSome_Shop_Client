@@ -185,7 +185,7 @@
                     <img src="../../assets/images/shopping-bag-icon.png"
                 /></a>
 
-                <div class="contain_small_cart">
+                <div class="contain_small_cart" v-bind:class="{ block: showCart }">
                     <div class="arrow"></div>
                     <div class="cart_items" v-if="cart.length > 0">
                         <div v-for="(item, index) in cart" :key="index">
@@ -329,7 +329,7 @@ export default {
         this.$store.commit("SET_CART");
     },
     computed: {
-        ...mapState(["cart", "products"]),
+        ...mapState(["cart", "products", "showCart"]),
     },
     data() {
         return {
@@ -583,6 +583,9 @@ header {
                 right: 210px;
                 overflow-y: auto;
                 max-height: 600px;
+                .block {
+                    display: block;
+                }
                 .cart_items {
                     width: 95%;
                     float: left;

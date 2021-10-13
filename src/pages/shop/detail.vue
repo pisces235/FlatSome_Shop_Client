@@ -138,11 +138,11 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="show_more" @click="commentsToShow += 3">
+                        <button class="show_more" @click="commentsToShow += 3" v-show="index < product.reviews.length">
                             SHOW MORE REVIEWS
                         </button>
                     </div>
-                    <div class="contain-right">
+                    <div class="contain-right" v-show="user.name">
                         <div class="add_review">
                             <div class="title">Add a review</div>
                             <label class="label">Your rating *</label>
@@ -168,8 +168,8 @@
                     </div>
                 </div>
                 <div class="contain-review" v-else>
-                    <p class="warning-review">There are no reviews yet.</p>
-                    <div class="add_review">
+                    <p class="warning-review">There are no reviews yet. <span v-show="!user.name"><a href="/account">Login</a> to add a review</span></p>
+                    <div class="add_review" v-show="user.name">
                         <div class="title">
                             Be the first to review "{{ product.name }}"
                         </div>
@@ -352,6 +352,7 @@ import { mapState } from "vuex";
 
 export default {
     created() {
+        this.user = JSON.parse(window.localStorage.currentUser);
         this.link = window.location.href;
         this.options = {
             perMove: 4,
@@ -431,6 +432,7 @@ export default {
                     quantity: this.quantity,
                 });
             }
+            this.$store.state.showCart = true
         },
         addItemToCart(product) {
             if (product.sale != 0) {
@@ -449,6 +451,7 @@ export default {
                     quantity: 1,
                 });
             }
+            this.$store.state.showCart = true
         },
         addReview() {
             let user = JSON.parse(window.localStorage.currentUser);

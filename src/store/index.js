@@ -18,6 +18,7 @@ export default new Vuex.Store({
         product: {},
         cart: [],
         blogs: [],
+        showCart: false,
     },
     mutations: {
         ADD_TO_CART(state, { product, quantity }) {
