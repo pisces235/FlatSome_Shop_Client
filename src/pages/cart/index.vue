@@ -205,20 +205,29 @@ export default {
     },
     methods: {
         addquantity(index) {
-            if (this.cart[index].quantity < this.cart[index].product.stock) {
+            if (
+                parseInt(this.cart[index].quantity) <
+                this.cart[index].product.stock
+            ) {
                 this.cart[index].quantity += 1;
                 window.localStorage.cart = JSON.stringify(this.cart);
             }
-            if (this.cart[index].quantity == this.cart[index].product.stock) {
+            if (
+                parseInt(this.cart[index].quantity) ==
+                this.cart[index].product.stock
+            ) {
                 this.stockMessage[index] = "This product is out of stock";
             }
         },
         removequantity(index) {
-            if (this.cart[index].quantity > 1) {
+            if (parseInt(this.cart[index].quantity) > 1) {
                 this.cart[index].quantity -= 1;
                 window.localStorage.cart = JSON.stringify(this.cart);
             }
-            if (this.cart[index].quantity != this.cart[index].product.stock) {
+            if (
+                parseInt(this.cart[index].quantity) !=
+                this.cart[index].product.stock
+            ) {
                 this.stockMessage[index] = "";
             }
         },
