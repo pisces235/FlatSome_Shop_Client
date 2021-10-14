@@ -82,6 +82,7 @@
                                 name="quantity"
                                 required
                                 min="1"
+                                :max="item.product.stock"
                                 v-model="item.quantity"
                                 onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                             />

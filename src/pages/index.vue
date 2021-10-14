@@ -44,8 +44,8 @@
                     <span>WEEKLY FEATURED PRODUCTS</span>
                     <hr />
                 </div>
-                <splide :options="options" :slides="products">
-                    <splide-slide v-for="p in products" :key="p.slug">
+                <splide :options="options" :slides="featuredProducts">
+                    <splide-slide v-for="p in featuredProducts" :key="p.slug">
                         <div class="box" v-if="p.categories.length > 1">
                             <div class="slide-img">
                                 <a
@@ -416,10 +416,16 @@
                 </div>
                 <splide :options="options" :slides="categories">
                     <splide-slide v-for="c in categories" :key="c.title">
-                        <a :href="'/product-category/' + c.title.toLowerCase()" class="box">
+                        <a
+                            :href="'/product-category/' + c.title.toLowerCase()"
+                            class="box"
+                        >
                             <div class="slide-img">
                                 <img :src="c.image" />
-                                <a href="'/product-category/' + c.title.toLowerCase()" class="category-btn">
+                                <a
+                                    href="'/product-category/' + c.title.toLowerCase()"
+                                    class="category-btn"
+                                >
                                     <p>{{ c.title }}</p>
                                     <p v-if="c.qty > 1">{{ c.qty }} PRODUCTS</p>
                                     <p v-else>{{ c.qty }} PRODUCT</p>
@@ -484,12 +490,26 @@ export default {
         await this.$store.dispatch("loadProducts");
         await this.$store.dispatch("loadNewProducts");
         await this.$store.commit("SET_CATEGORIES");
+        let newProducts = this.products.sort(function (a, b) {
+            let x = a.sold;
+            let y = b.sold;
+            if (x < y) {
+                return -1;
+            }
+            if (x > y) {
+                return 1;
+            }
+            return 0;
+        });
+        this.featuredProducts = newProducts.reverse();
     },
     computed: {
         ...mapState(["products", "newProducts", "categories"]),
     },
-    async data() {
-        return {};
+    data() {
+        return {
+            featuredProducts: [],
+        };
     },
     components: {
         Splide,
