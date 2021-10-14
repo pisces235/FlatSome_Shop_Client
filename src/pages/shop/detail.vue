@@ -138,7 +138,11 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="show_more" @click="commentsToShow += 3" v-show="index < product.reviews.length">
+                        <button
+                            class="show_more"
+                            @click="commentsToShow += 3"
+                            v-show="index < product.reviews.length"
+                        >
                             SHOW MORE REVIEWS
                         </button>
                     </div>
@@ -168,7 +172,12 @@
                     </div>
                 </div>
                 <div class="contain-review" v-else>
-                    <p class="warning-review">There are no reviews yet. <span v-show="!user.name"><a href="/account">Login</a> to add a review</span></p>
+                    <p class="warning-review">
+                        There are no reviews yet.
+                        <span v-show="!user.name"
+                            ><a href="/account">Login</a> to add a review</span
+                        >
+                    </p>
                     <div class="add_review" v-show="user.name">
                         <div class="title">
                             Be the first to review "{{ product.name }}"
@@ -431,7 +440,7 @@ export default {
                     quantity: this.quantity,
                 });
             }
-            this.$store.state.showCart = true
+            this.$store.state.showCart = true;
         },
         addItemToCart(product) {
             if (product.sale != 0) {
@@ -450,7 +459,7 @@ export default {
                     quantity: 1,
                 });
             }
-            this.$store.state.showCart = true
+            this.$store.state.showCart = true;
         },
         addReview() {
             let user = JSON.parse(window.localStorage.currentUser);
@@ -460,16 +469,18 @@ export default {
                 name: user.name,
                 UserID: user.id,
             };
-            this.$store.dispatch("addReview", {
-                slug: this.product.slug,
-                newReview: newReview,
-            }).then(response => {
-                if(response.message == true) {
-                    this.$router.go();
-                } else {
-                    alert("Some tihng wrong! Please try again later!")
-                }
-            })
+            this.$store
+                .dispatch("addReview", {
+                    slug: this.product.slug,
+                    newReview: newReview,
+                })
+                .then((response) => {
+                    if (response.message == true) {
+                        this.$router.go();
+                    } else {
+                        alert("Some tihng wrong! Please try again later!");
+                    }
+                });
         },
     },
 };

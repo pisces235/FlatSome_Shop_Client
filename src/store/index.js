@@ -125,7 +125,8 @@ export default new Vuex.Store({
             let newArray = [];
             for (var i = 0; i < state.products.length; i++) {
                 if (
-                    product.categories[0].toLowerCase() == state.products[i].categories[0].toLowerCase() &&
+                    product.categories[0].toLowerCase() ==
+                        state.products[i].categories[0].toLowerCase() &&
                     product.slug != state.products[i].slug
                 ) {
                     newArray.push(state.products[i]);
@@ -154,7 +155,10 @@ export default new Vuex.Store({
         },
         async addReview({ commit }, { slug, newReview }) {
             try {
-                let res = await api().patch(`/products/${slug}/addReview`, newReview);
+                let res = await api().patch(
+                    `/products/${slug}/addReview`,
+                    newReview
+                );
                 return { message: res.data.success };
             } catch (error) {
                 return { message: error.message };
