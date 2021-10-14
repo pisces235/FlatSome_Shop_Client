@@ -185,7 +185,10 @@
                     <img src="../../assets/images/shopping-bag-icon.png"
                 /></a>
 
-                <div class="contain_small_cart" v-bind:class="{ block: showCart }">
+                <div
+                    class="contain_small_cart"
+                    v-bind:class="{ block: showCart }"
+                >
                     <div class="arrow"></div>
                     <div class="cart_items" v-if="cart.length > 0">
                         <div v-for="(item, index) in cart" :key="index">
@@ -279,24 +282,41 @@
                         <a href="/" class="nav__mobile-link">BLOG</a>
                     </li>
                     <li v-if="isLoggedIn == true">
-                        <a href="/my-account" class="nav__mobile-link show-dropdown">MY ACCOUNT</a>
+                        <a
+                            href="/my-account"
+                            class="nav__mobile-link show-dropdown"
+                            >MY ACCOUNT</a
+                        >
                         <nav class="dropdown">
                             <ul>
                                 <li>
-                                    <a href="/my-account/orders" class="nav__mobile-link">Orders</a>
+                                    <a
+                                        href="/my-account/orders"
+                                        class="nav__mobile-link"
+                                        >Orders</a
+                                    >
                                 </li>
                                 <li>
-                                    <a href="/my-account/addresses" class="nav__mobile-link"
+                                    <a
+                                        href="/my-account/addresses"
+                                        class="nav__mobile-link"
                                         >Addresses</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="/my-account/account-details" class="nav__mobile-link"
+                                    <a
+                                        href="/my-account/account-details"
+                                        class="nav__mobile-link"
                                         >Account details</a
                                     >
                                 </li>
                                 <li>
-                                    <div @click="logoutUser" class="nav__mobile-link">Logout</div>
+                                    <div
+                                        @click="logoutUser"
+                                        class="nav__mobile-link"
+                                    >
+                                        Logout
+                                    </div>
                                 </li>
                             </ul>
                         </nav>
@@ -314,10 +334,10 @@
 import { mapState } from "vuex";
 export default {
     created() {
-        if(window.localStorage.currentUser) {
+        if (window.localStorage.currentUser) {
             this.currentUser = JSON.parse(window.localStorage.currentUser);
         } else {
-            window.localStorage.currentUser = JSON.stringify({})
+            window.localStorage.currentUser = JSON.stringify({});
         }
 
         if (this.currentUser.name) {
@@ -687,9 +707,10 @@ header {
                 li {
                     line-height: 54px;
                     .dropdown {
-                        display:none;
+                        display: none;
                     }
-                    .show-dropdown:hover ~ .dropdown, .dropdown:hover {
+                    .show-dropdown:hover ~ .dropdown,
+                    .dropdown:hover {
                         display: block;
                     }
                 }

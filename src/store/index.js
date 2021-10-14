@@ -42,7 +42,7 @@ export default new Vuex.Store({
             if (typeof JSON.parse(window.localStorage.cart) != "undefined") {
                 state.cart = JSON.parse(window.localStorage.cart);
             } else {
-                state.cart = {}
+                state.cart = {};
             }
         },
         SET_CATEGORIES(state) {
