@@ -146,7 +146,7 @@
                             SHOW MORE REVIEWS
                         </button>
                     </div>
-                    <div class="contain-right" v-show="user.name">
+                    <div class="contain-right" v-show="isLoggedIn == true">
                         <div class="add_review">
                             <div class="title">Add a review</div>
                             <label class="label">Your rating *</label>
@@ -174,11 +174,11 @@
                 <div class="contain-review" v-else>
                     <p class="warning-review">
                         There are no reviews yet.
-                        <span v-show="!user.name"
+                        <span v-show="isLoggedIn == false"
                             ><a href="/account">Login</a> to add a review</span
                         >
                     </p>
-                    <div class="add_review" v-show="user.name">
+                    <div class="add_review" v-show="isLoggedIn == true">
                         <div class="title">
                             Be the first to review "{{ product.name }}"
                         </div>
@@ -361,8 +361,8 @@ import { mapState } from "vuex";
 
 export default {
     created() {
-        this.user = JSON.parse(window.localStorage.currentUser);
         this.link = window.location.href;
+        this.isLoggedIn = JSON.parse(window.localStorage.isLoggedIn);
         this.options = {
             perMove: 4,
             rewind: true,
@@ -394,6 +394,7 @@ export default {
             quantity: 1,
             isActiveDescription: true,
             isActiveReview: false,
+            isLoggedIn: false,
             showDescription: true,
             showReview: false,
             rating: 5,

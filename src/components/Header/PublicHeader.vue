@@ -314,7 +314,11 @@
 import { mapState } from "vuex";
 export default {
     created() {
-        this.currentUser = JSON.parse(window.localStorage.currentUser);
+        if(window.localStorage.currentUser) {
+            this.currentUser = JSON.parse(window.localStorage.currentUser);
+        } else {
+            window.localStorage.currentUser = JSON.stringify({})
+        }
 
         if (this.currentUser.name) {
             window.localStorage.isLoggedIn = JSON.stringify(true);
