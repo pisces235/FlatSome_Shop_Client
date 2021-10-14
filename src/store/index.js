@@ -154,8 +154,8 @@ export default new Vuex.Store({
         },
         async addReview({ commit }, { slug, newReview }) {
             try {
-                await api().patch(`/products/${slug}/addReview`, newReview);
-                return { message: "success" };
+                let res = await api().patch(`/products/${slug}/addReview`, newReview);
+                return { message: res.data.success };
             } catch (error) {
                 return { message: error.message };
             }

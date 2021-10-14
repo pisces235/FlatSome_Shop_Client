@@ -80,7 +80,7 @@
             <hr class="last_hr" />
             <p class="categories">
                 Categories:
-                <span v-for="(c, index) in product.categories" :key="c">
+                <span v-for="(c, index) in product.categories" :key="index">
                     <span v-show="index == product.categories.length - 1"
                         >{{ c }}.</span
                     >
@@ -463,8 +463,13 @@ export default {
             this.$store.dispatch("addReview", {
                 slug: this.product.slug,
                 newReview: newReview,
-            });
-            this.$router.go();
+            }).then(response => {
+                if(response.message == true) {
+                    this.$router.go();
+                } else {
+                    alert("Some tihng wrong! Please try again later!")
+                }
+            })
         },
     },
 };
