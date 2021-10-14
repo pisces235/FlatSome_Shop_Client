@@ -141,7 +141,7 @@
                         <button
                             class="show_more"
                             @click="commentsToShow += 3"
-                            v-show="index < product.reviews.length"
+                            v-show="commentsToShow < product.reviews.length"
                         >
                             SHOW MORE REVIEWS
                         </button>
@@ -398,7 +398,7 @@ export default {
             showReview: false,
             rating: 5,
             review: "",
-            commentsToShow: 3,
+            commentsToShow: 2,
         };
     },
     methods: {
