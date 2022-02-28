@@ -423,7 +423,7 @@
                             <div class="slide-img">
                                 <img :src="c.image" />
                                 <a
-                                    href="'/product-category/' + c.title.toLowerCase()"
+                                    :href="'/product-category/' + c.title.toLowerCase()"
                                     class="category-btn"
                                 >
                                     <p>{{ c.title }}</p>
