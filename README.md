@@ -25,3 +25,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### For demo
 https://flatsome-shop.netlify.app/
+Admin page: https://flatsome-shop-admin.netlify.app/
+Admin account: pi@gmail.com, password: 12345678
