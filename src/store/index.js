@@ -39,10 +39,11 @@ export default new Vuex.Store({
             window.localStorage.cart = JSON.stringify(state.cart);
         },
         SET_CART(state) {
-            if (typeof JSON.parse(window.localStorage.cart) != "undefined") {
+            if (typeof window.localStorage.cart !== "undefined") {
                 state.cart = JSON.parse(window.localStorage.cart);
             } else {
-                state.cart = {};
+                state.cart = [];
+                window.localStorage.cart = JSON.stringify(state.cart);
             }
         },
         SET_CATEGORIES(state) {
@@ -128,7 +129,7 @@ export default new Vuex.Store({
             for (var i = 0; i < state.products.length; i++) {
                 if (
                     product.categories[0].toLowerCase() ==
-                        state.products[i].categories[0].toLowerCase() &&
+                    state.products[i].categories[0].toLowerCase() &&
                     product.slug != state.products[i].slug
                 ) {
                     newArray.push(state.products[i]);

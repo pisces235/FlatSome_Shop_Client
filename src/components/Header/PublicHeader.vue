@@ -181,7 +181,8 @@
                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                         }}</span
                     >
-                    <label class="count-cart">{{ cart.length }}</label>
+                    <label class="count-cart" v-if="cart.length > 0">{{ cart.length }}</label>
+                    <label class="count-cart" else>0</label>
                     <img src="../../assets/images/shopping-bag-icon.png"
                 /></a>
 
@@ -334,7 +335,7 @@
 import { mapState } from "vuex";
 export default {
     created() {
-        if (window.localStorage.currentUser) {
+        if (typeof window.localStorage.currentUser != "undefined") {
             this.currentUser = JSON.parse(window.localStorage.currentUser);
         } else {
             window.localStorage.currentUser = JSON.stringify({});
@@ -360,6 +361,7 @@ export default {
             newCart: [],
             searchItems: [],
             search: "",
+            isLoggedIn: false,
         };
     },
     methods: {
