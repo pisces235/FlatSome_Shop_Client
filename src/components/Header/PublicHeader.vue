@@ -181,8 +181,7 @@
                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                         }}</span
                     >
-                    <label class="count-cart" v-if="cart.length > 0">{{ cart.length }}</label>
-                    <label class="count-cart" else>0</label>
+                    <label class="count-cart">{{ cart.length }}</label>
                     <img src="../../assets/images/shopping-bag-icon.png"
                 /></a>
 

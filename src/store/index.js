@@ -129,7 +129,7 @@ export default new Vuex.Store({
             for (var i = 0; i < state.products.length; i++) {
                 if (
                     product.categories[0].toLowerCase() ==
-                    state.products[i].categories[0].toLowerCase() &&
+                        state.products[i].categories[0].toLowerCase() &&
                     product.slug != state.products[i].slug
                 ) {
                     newArray.push(state.products[i]);
